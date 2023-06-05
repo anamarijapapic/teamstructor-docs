@@ -1,0 +1,46 @@
+\documentclass[12pt, a4paper]{article}
+
+\input{00_preamble}
+
+\begin{document}
+
+\selectlanguage{croatian}
+\input{00_frontmatter} % numeracija i naslovnice
+
+\input{01_summary_hr}
+
+\noindent\textbf{Ključne riječi}: \textit{(abecednim redom navesti najviše 5 ključnih riječi odvojenih zarezom)}
+
+\selectlanguage{english}
+\input{01_summary_en}
+
+\noindent\textbf{Keywords:} ...
+
+\newpage
+\selectlanguage{croatian}
+\input{02_introduction}
+
+\newpage
+\input{03_zavrsni_dinamika}
+
+\newpage
+\input{04_zavrsni_priprema_i_izrada}
+
+\newpage
+\input{05_conclusion}
+
+\newpage
+\addcontentsline{toc}{section}{Literatura}
+\bibliography{citations}
+\bibliographystyle{IEEEtran}
+
+\newpage
+\clearpage
+\phantomsection
+
+\begin{appendices}
+\appendix
+\thispagestyle{empty}
+\end{appendices}
+
+\end{document}
