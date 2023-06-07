@@ -6,6 +6,9 @@
 \usepackage{sectsty}
 \allsectionsfont{\sffamily}
 
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
 \usepackage{fancyhdr}
 \usepackage{times}
 \usepackage{cite}
@@ -14,15 +17,17 @@
 \usepackage{setspace}
 \linespread{1.5}
 
-\usepackage{secdot} % tocka za broj section, subsection
+\usepackage{secdot} % show dot for section, subsection and paragraph numbers
 \sectiondot{subsection}
+\sectiondot{subsubsection}
+\sectiondot{paragraph}
 
 \usepackage[toc,page]{appendix}
 \usepackage{pdfpages}
 % ime appendixa na hrvatskom
 \addto\captionscroatian{%
-   \renewcommand{\appendixtocname}{Dodaci}%
-   \renewcommand{\appendixpagename}{Dodaci}%
+   \renewcommand{\appendixtocname}{Dodatci}%
+   \renewcommand{\appendixpagename}{Dodatci}%
 }
 
 \usepackage[hyphens]{url}
