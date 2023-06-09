@@ -9,3 +9,7 @@ Thesis paper that accompanies practical work - web application [Teamstructor](ht
 > University of Split - University Department of Professional Studies
 
 - [papic_zavrsni.pdf](https://github.com/anamarijapapic/teamstructor-docs/blob/main/papic_zavrsni.pdf) - Final paper
+
+To browse application source code visit [Teamstructor](https://github.com/anamarijapapic/teamstructor) GitHub repository.  
+
+[![Teamstructor](https://github-readme-stats.vercel.app/api/pin/?username=anamarijapapic&repo=teamstructor&show_owner=true&theme=transparent)](https://github.com/anamarijapapic/teamstructor)  
