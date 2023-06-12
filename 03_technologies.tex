@@ -1,6 +1,17 @@
 \section{Korištene tehnologije}
 
 \subsection{Laravel}
+Laravel je PHP (engl. \textit{PHP: Hypertext Preprocessor}) razvojni okvir (engl. \textit{framework}) namijenjen razvoju web aplikacija zasnivanih na MVC (\textit{"Model-View-Controller"}) arhitekturi. Njegove značajke su da je slobodan, besplatan te otvorenog k\^oda, stoga je cijeli njegov izvorni k\^od dostupan na platformi GitHub~\cite{laravelGitHub} gdje svatko može dati svoj doprinos pa se naziva i razvojnim okvirom zajednice (engl. \textit{community framework}). Tvorac Laravela je Taylor Otwell, koji je 2011. godine razvio početnu verziju Laravela pokušavajući poboljšati tada popularan razvojni okvir CodeIgniter.
+
+Trenutno je, uz Symfony, Laravel najpopularniji PHP razvojni okvir zahvaljujući svojoj jednostavnoj i izražajnoj sintaksi, detaljnoj dokumentaciji i obilnoj količini (video)vodiča, jasnoj strukturi, iznimnoj skalabilnosti te bogatom Laravel ekostustavu s dostupnom ogromnom bibliotekom pomno održavanih paketa.
+
+Pruža elegantna gotova \textit{"out-of-the-box"} rješenja za česte značajke potrebne web aplikacijama: jednostavno i brzo usmjerivanje zahtjeva, moćno ubrizgavanje ovisnosti, pohranjivanje sesija i predmemorije, autentikaciju, autorizaciju, interakciju s podatcima u bazi, modelima, migracijama i relacijama, validaciju, slanje e-pošte i notifikacija, pohranu datoteka, red čekanja i pozadinsku obradu poslova, zakazivanje zadataka, događaje itd~\cite{laravel}.
+
+Dolazi s \textbf{Artisan} sučeljem naredbenog retka (engl. \textit{command line interface}) koje pruža mnoge korisne naredbe koje pomažu pri razvoju aplikacije. Artisan naredbe su u formi \texttt{php artisan <command>}.\\ 
+Instalacijom Laravela također se dobiva i \textbf{Tinker} (REPL - \textit{"Read—Eval—Print—Loop"}) interaktivna ljuska koja omogućava testne interakcije s modelima, poslovima, događajima itd. Za početak rada u Tinker razvojnom okruženju pokreće se Artisan naredba \texttt{php artisan tinker}~\cite{artisanConsole}.
+
+Laravel i njegovi ostali paketi prve strane (engl. \textit{first-party}) prate semantičko verzioniranje, pri čemu se \textit{major} verzija razvojnog okvira Laravel sada izdaje svake godine, dok su \textit{minor} i \textit{patch} izdanja češća. Sva izdanja razvojnog okvira Laravel primaju ispravke pogrešaka do 18 mjeseci od izdavanja, a sigurnosne ispravke do 2 godine od izdavanja.
+Trenutna verzija razvojnog okvira Laravel je 10.x te zahtijeva minimalnu PHP verziju 8.1~\cite{releaseNotes}. 
  
 \subsection{Docker spremnici kao razvojno okruženje}
 
