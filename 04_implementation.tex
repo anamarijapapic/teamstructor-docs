@@ -100,8 +100,28 @@ Možemo vidjeti da se \texttt{app} direktorij sastoji od sljedećih poddirektori
 Još nekolicina direktorija može biti generirana unutar \texttt{app} direktorija izvršavanjem Artisan \texttt{make} naredbi za generiranje klasa~\cite{structure}. 
 
 \subsection{Struktura relacijske baze podataka}
+Na slici~\ref{fig:erDiagram} prikazan je ER (engl. \textit{Entity Relationship}) dijagram relacijske baze podataka u phpMyAdmin sučelju na kojemu možemo vidjeti tablice u koje su podatci spremani te njihove međusobne relacije.
+\begin{figure}[H]
+	\includegraphics[width=1\linewidth,clip=]{assets/db-er-diagram.png}
+	\centering
+	\caption{Dijagram relacijske baze podataka}
+	\label{fig:erDiagram}
+\end{figure}
+
+Radi preglednosti su na dijagramu sa slike~\ref{fig:erDiagram} prikazane samo tablice koje se odnose na modele, a izostavljene su tablice: 
+\begin{itemize}
+\item \texttt{failed\_jobs} - Automatski prisutna u Laravel aplikacijama, služi za pohranu poslova iz reda čekanja koji se nisu uspjeli izvršiti.
+\item \texttt{migrations} - Automatski prisutna u Laravel aplikacijama, služi za pohranu migracija.
+\item \texttt{password\_reset\_tokens} - Automatski prisutna u Laravel aplikacijama, služi za pohranu tokena za ponovno postavljanje lozinki u aplikaciji.
+\item \texttt{personal\_access\_tokens} - Kreira ju Laravel Sanctum pri instalaciji Laravel Jetstreama, a služi za pohranu API tokena u aplikaciji.
+\item \texttt{sessions} - Kada se koristi \texttt{database} \textit{driver} za sesije, onda se u ovu tablicu iste pohranjuju.
+\item \texttt{telescope\_entries}, \texttt{telescope\_entries\_tags}, \texttt{telescope\_monitoring} - Nastaju pri instalaciji Laravel Telescopea, a služe za pohranu podataka za Telescope.
+\end{itemize}
+
+U poglavlju~\ref{subsubsection:dbInteraction} će biti više rečeno o načinima na koje se ostvaruje interakcija s bazom podataka te o samim modelima i relacijama.
 
 \subsection{Interakcija s bazom podataka}
+\label{subsubsection:dbInteraction}
 
 \subsubsection{Migracije}
 
