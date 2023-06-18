@@ -124,6 +124,84 @@ U poglavlju~\ref{subsubsection:dbInteraction} će biti više rečeno o načinima
 \label{subsubsection:dbInteraction}
 
 \subsubsection{Migracije}
+Migracije služe kao kontrola verzije baze podataka. U Laravelu migracije koriste fasadu (engl. \textit{facade}) \texttt{Schema} koja pruža \textit{database agnostic} podršku za sve sustave baza podataka koje Laravel podržava.
+
+Migracija se može kreirati pozivom \texttt{make:migration} Artisan naredbe te će se ista smjestiti u \texttt{database/migrations} direktorij. Nazivu svake migracije dodaje se pripadajući \textit{timestamp} prema kojem Laravel prati redoslijed migracija.
+
+Sama migracijska klasa sadrži dvije metode: \texttt{up} koja kreira ili modificira tablice, stupce ili indekse u bazi podataka te \texttt{down} koja bi trebala poništiti promjene učinjene u \texttt{up} metodi inverznim operacijama.
+
+U ispisu~\ref{projectsTableMigration} možemo vidjeti k\^od migracije za kreiranje tablice \texttt{projects} u kojoj u \texttt{up} metodi kreiramo tablicu navodeći njezin naziv i stupce koje sadrži, a u \texttt{down} metodi poništavamo operacije izvedene u \texttt{up} metodi na način da se odbacuje novokreirana tablica tj. izvodi \textit{drop} tablice.
+
+\begin{lstlisting}[caption={Migracija za kreiranje tablice \texttt{projects}}, label=projectsTableMigration]
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('projects', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->foreignId('team_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('projects');
+    }
+};
+
+\end{lstlisting}
+
+U ispisu~\ref{administratorColumnMigration} prikazana je migracija koja modificira tablicu \texttt{users} tako da joj dodaje stupac \texttt{is\_administrator}. U \texttt{up} metodi definira se stupac koji će se dodati, a u \texttt{down} metodi te promjene će biti poništene odbacivanjem novododanog stupca metodom \texttt{dropColumn}.
+
+\begin{lstlisting}[caption={Migracija za dodavanje stupca \texttt{is\_administrator} u tablicu \texttt{users}}, label=administratorColumnMigration]
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('is_administrator')->default(false);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_administrator');
+        });
+    }
+};
+
+\end{lstlisting}
+
+Za izvršiti sve migracije koje se još nisu primjenile na bazu podataka pokreće se Artisan naredba \texttt{migrate}, a za povratak na prethodnu migraciju tj. poništavanje promjena posljednjih \textit{n} migracija Artisan naredba \texttt{migrate:rollback}.
 
 \subsubsection{Populacija podatcima (engl. \textit{seeding})}
 
