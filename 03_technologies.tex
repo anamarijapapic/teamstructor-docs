@@ -14,7 +14,6 @@ Laravel i njegovi ostali paketi prve strane (engl. \textit{first-party}) prate s
 Trenutna verzija razvojnog okvira Laravel je 10.x te zahtijeva minimalnu PHP verziju 8.1~\cite{releaseNotes}. 
  
 \subsection{Docker spremnici kao razvojno okruženje}
-
 Kako bi se web aplikacija jednako uspješno izvodila u različitim okruženjima - na različitim operativnim sustavima i arhitekturama računala, korištena je tehnologija Docker \textbf{spremnika} (engl. \textit{containers}) te je aplikacija kontejnerizirana.
 
 Svaki stroj koji ima instaliran Docker Engine može pokretati i stvarati Docker spremnike konstruirane iz Docker \textbf{slika} (engl. \textit{image}). Za izgraditi sliku spremnika Docker koristi \texttt{Dockerfile} datoteku u kojoj se nalazi skripta s uputama za kreiranje iste. Za inicijalizaciju i izvođenje aplikacija koje se sastoje od više spremnika potreban je alat \textbf{Docker Compose} te su u tom slučaju aplikacijski servisi konfigurirani u \texttt{docker-compose.yml} datoteci. Instalacijom Docker Desktop aplikacije na računalo dobiva se i Docker Engine i Docker Compose V2 te dodatni alati. Upisivanjem naredbe \texttt{docker compose up} u terminal iz direktorija projekta pokreće se aplikacija i svi njeni servisi, a naredbom \texttt{docker compose down} zaustavljaju se svi pokrenuti servisi te se brišu spremnici~\cite{dockerCompose}. Unutar \texttt{docker-compose.yml} datoteke kreirani su imenovani \textbf{volumeni} (engl. \textit{volumes}) koji služe za očuvanje podataka koje generiraju i koriste Docker spremnici~\cite{dockerVolumes}.
@@ -25,7 +24,7 @@ U nastavku će kratko biti opisane tehnologije koje su nužne za rad aplikacije,
 Kao lokalni web poslužitelj (engl. \textit{server}) korišten je Nginx [engine x]. Kao početna točka za konfiguraciju web poslužitelja koristi se datoteka \texttt{default.conf}~\cite{nginxDeployment}, u čijem se sadržaju unutar \texttt{server} direktive konfigurira virtualni poslužitelj~\cite{nginxServer}.
 
 \subsubsection{PHP}
-PHP (rekurzivni akronim za  \textit{PHP: Hypertext Preprocessor}, a prije je kratica označavala \textit{Personal Home Page}) je popularan besplatan skriptni jezik otvorenog k\^oda (izvorni k\^od je dostupan na platformi GitHub~\cite{phpGitHub}) koji se izvršava na poslužitelju (engl. \textit{server-side scripting}). 1994. godine razvio ga je  Rasmus Lerdorf, a sintaksa mu je bazirana na C, Java i Perl programskim jezicima. PHP je jezik opće namjene, ali je posebno prikladan za razvijanje web aplikacija~\cite{Brekalo}.
+PHP (rekurzivni akronim za  \textit{PHP: Hypertext Preprocessor}, a prije je kratica označavala \textit{Personal Home Page}) je popularni besplatni skriptni jezik otvorenog k\^oda (izvorni k\^od je dostupan na platformi GitHub~\cite{phpGitHub}) koji se izvršava na poslužitelju (engl. \textit{server-side scripting}). 1994. godine razvio ga je  Rasmus Lerdorf, a sintaksa mu je bazirana na C, Java i Perl programskim jezicima. PHP je jezik opće namjene, ali je posebno prikladan za razvijanje web aplikacija~\cite{Brekalo}.
 
 PHP se koristi u najpopularnijem sustavu za upravljanje
 sadržajem (engl. \textit{CMS - Content Management System}) – WordPressu, a postoji i nekoliko PHP razvojnih okvira: Laravel, Symfony, CodeIgniter, Zend, Yii 2, CakePHP, Fuel PHP, FATFree, Aura i dr.~\cite{Brekalo}
@@ -33,17 +32,17 @@ sadržajem (engl. \textit{CMS - Content Management System}) – WordPressu, a po
 Trenutna verzija PHP jezika je 8.2, a trenutno je aktivno podržana i verzija 8.1. Svaka grana izdanja (engl. \textit{release branch}) PHP-a u potpunosti je podržana dvije godine od svog prvog stabilnog izdanja i tijekom tog razdoblja za nju se objavljuju ispravci pogrešaka i sigurnosnih problema. Nakon tog razdoblja aktivne podrške, grana izdanja dobiva još jednu godinu podrške samo za kritične sigurnosne ispravke i to po potrebi. Nakon što isteknu tri godine podrške, grana dolazi do kraja života (engl. \textit{end of life}) i više nije podržana~\cite{phpVersions}.
 
 \subsubsection{MySQL}
-MySQL je besplatan program otvorenog k\^oda za upravljanje relacijskim bazama podataka (engl. \textit{RDBMS - Relational Database Management System}). Dio "SQL" u imenu stoji za \textit{“Structured Query Language”} - najčešći standardiziran jezik korišten za pristup bazama podataka. Najčešća alternativa MySQL-u su također besplatni programi otvorenog k\^oda MariaDB i PostgreSQL. Kod MySQL-a osnovni stroj baze podataka i ujedno i najčešće korišten je InnoDB koji koristi transakcijski mehanizam~\cite{Brekalo}.
+MySQL je besplatni program otvorenog k\^oda za upravljanje relacijskim bazama podataka (engl. \textit{RDBMS - Relational Database Management System}). Pokrata "SQL" u imenu stoji za \textit{“Structured Query Language”} - najčešći standardizirani jezik korišten za pristup bazama podataka. Najčešća alternativa MySQL-u su također besplatni programi otvorenog k\^oda MariaDB i PostgreSQL. Kod MySQL-a osnovni stroj baze podataka i ujedno i najčešće korišteni je InnoDB koji koristi transakcijski mehanizam~\cite{Brekalo}.
 
 \subsubsection{phpMyAdmin}
-phpMyAdmin je besplatan softverski alat otvorenog k\^oda napisan u PHP-u koji podržava širok spektar operacija unutar MySQL i MariaDB relacijskih baza podataka. Radi se o intuitivnom grafičkom korisničkom sučelju (engl. \textit{GUI - Graphical User Interface}) pa akcije mogu biti izvršene unutar korisničkog sučelja izravno u web pregledniku~\cite{Brekalo}.
+phpMyAdmin je besplatni softverski alat otvorenog k\^oda napisan u PHP-u koji podržava širok spektar operacija unutar MySQL i MariaDB relacijskih baza podataka. Radi se o intuitivnom grafičkom korisničkom sučelju (engl. \textit{GUI - Graphical User Interface}) pa akcije mogu biti izvršene unutar korisničkog sučelja izravno u web pregledniku~\cite{Brekalo}.
 
 Može mu se pristupiti unosom adrese \texttt{http://localhost:8080} u web preglednik, pri čemu će se pojaviti phpMyAdmin "Welcome to phpMyAdmin" stranica koja traži unos korisničkog imena i loznike.
 
 \subsection{Upravitelji paketima i ovisnostima}
 
 \subsubsection{npm}
-npm (Node package manager) je upravitelj paketa za Node.js nastao 2009. godine kao projekt otvorenog k\^oda koji bi JavaScript programerima pomogao da jednostavno dijele zapakirane module koda.
+npm (Node package manager) je upravitelj paketa za Node.js nastao 2009. godine kao projekt otvorenog k\^oda koji bi JavaScript programerima pomogao da jednostavno dijele zapakirane module k\^oda.
 
 npm je klijent naredbenog retka koji programerima omogućuje instaliranje i objavljivanje tih paketa.
 

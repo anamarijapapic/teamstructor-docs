@@ -5,11 +5,11 @@
 \subsubsection{Početni komplet Laravel Jetstream}
 Kako bi developerima uštedio vrijeme u samome početku razvijanja nove aplikacije, Laravel nudi autentikacijske i aplikacijske početne komplete (engl.~\textit{starter kits}) kao što su Laravel Breeze i Laravel Jetstream koji automatski pružaju rute, kontrolere i poglede (engl. \textit{views}) potrebne za registraciju i autentikaciju~\cite{starterKits}.
 
-Laravel Jetstream dizajniran je koristeći \textbf{Tailwind CSS}, \textit{utility-first} CSS razvojni okvir. Datoteke \texttt{postcss.config.js} i \texttt{tailwind.config.js} koriste pri \textit{buildanju} kompajliranog CSS-a aplikacije.
+Laravel Jetstream dizajniran je koristeći \textbf{Tailwind CSS}, \textit{utility-first} CSS razvojni okvir. Datoteke \texttt{postcss.config.js} i \texttt{tailwind.config.js} koriste se pri \textit{buildanju} kompajliranog CSS-a aplikacije.
 
-Značajke koje Laravel Jetstream početni komplet pruža su autentikacija, registracija, upravljanje korisničkim profilima, ponovno postavljanje lozinke, verifikacija e-adrese, dvostruka provjera autentičnosti (engl. \textit{two-factor authentication}), upravljanje aktivnim sesijama u web preglednicima, API podrška te opcionalne opcije za upravljanje timovima~\cite{jetstreamIntro}.
+Značajke koje početni komplet Laravel Jetstream pruža su autentikacija, registracija, upravljanje korisničkim profilima, ponovno postavljanje lozinke, verifikacija e-adrese, dvostruka provjera autentičnosti (engl. \textit{two-factor authentication}), upravljanje aktivnim sesijama u web preglednicima, API podrška te opcionalne opcije za upravljanje timovima~\cite{jetstreamIntro}.
 
-Instalira se koristeći Composer, a naredbe za instalaciju prikazane su ispisu~\ref{jetstreamInstallation}.
+Instalira se koristeći Composer, a naredbe za instalaciju prikazane su u ispisu~\ref{jetstreamInstallation}.
 
 \begin{lstlisting}[caption={Naredbe za instalaciju Jetstream paketa u novi Laravel projekt}, label=jetstreamInstallation]
 composer create-project laravel/laravel teamstructor-app
@@ -32,7 +32,7 @@ Dobra je praksa i zbog sigurnosti i zbog toga što je konfiguracija promjenjiva 
 
 Primjer definicije varijable može se vidjeti u ispisu~\ref{envDefinition}.
 
-\begin{lstlisting}[caption={Definicija varijable u \texttt{.env datoteci}}, label=envDefinition]
+\begin{lstlisting}[caption={Definicija varijable u \texttt{.env} datoteci}, label=envDefinition]
 APP_NAME=Teamstructor
 \end{lstlisting}
 
@@ -71,7 +71,7 @@ Osnovna struktura \textit{root} direktorija Laravel aplikacije jest sljedeća~\c
 \item \texttt{resources} - Sadrži poglede (engl. \textit{views}) i nekompajlirane JavaScript i CSS datoteke koje su \textit{assets} aplikacije.
 \item \texttt{routes} - Sadrži definicije svih ruta u aplikaciji. Zadano su uključene datoteke: \texttt{web.php}, \texttt{api.php}, \texttt{console.php} i \texttt{channels.php}.
 \item \texttt{storage} - Služi kao lokalno spremište podataka aplikacije te je podijeljen na direktorije \texttt{app}, \texttt{framework} i \texttt{logs}. Sadrži \texttt{.log} datoteke zapisnika, kompajlirane Blade predloške, sesije, predmemorije datoteka itd.
-\item \texttt{tests} - Sadrži skripte za automatizirane testove aplikacije te dolazi s po jednim oglednim primjerom \textit{unit} i \textit{feature} testova.
+\item \texttt{tests} - Sadrži skripte za automatizirane aplikacijske testove te dolazi s po jednim oglednim primjerom \textit{unit} i \textit{feature} testova.
 \item \texttt{vendor} - Sadrži preuzete Composer ovisnosti aplikacije.
 \end{itemize}
 
@@ -124,11 +124,11 @@ U poglavlju~\ref{subsubsection:dbInteraction} će biti više rečeno o načinima
 \label{subsubsection:dbInteraction}
 
 \subsubsection{Migracije}
-Migracije služe kao kontrola verzije baze podataka. U Laravelu migracije koriste fasadu (engl. \textit{facade}) \texttt{Schema} koja pruža \textit{database agnostic} podršku za sve sustave baza podataka koje Laravel podržava.
+Migracije služe kao kontrola verzije baze podataka. U Laravelu migracije koriste fasadu (engl. \textit{facade}) \texttt{Schema} koja pruža \textit{database agnostic} podršku za sve sustave baza podataka koje Laravel podržava~\cite{migrations}.
 
-Migracija se može kreirati pozivom \texttt{make:migration} Artisan naredbe te će se ista smjestiti u \texttt{database/migrations} direktorij. Nazivu svake migracije dodaje se pripadajući \textit{timestamp} prema kojem Laravel prati redoslijed migracija.
+Migracija se može kreirati pozivom \texttt{make:migration} Artisan naredbe te će se ista smjestiti u \texttt{database/migrations} direktorij. Nazivu svake migracije dodaje se pripadajući \textit{timestamp} prema kojem Laravel prati redoslijed migracija~\cite{migrations}.
 
-Sama migracijska klasa sadrži dvije metode: \texttt{up} koja kreira ili modificira tablice, stupce ili indekse u bazi podataka te \texttt{down} koja bi trebala poništiti promjene učinjene u \texttt{up} metodi inverznim operacijama.
+Sama migracijska klasa sadrži dvije metode: \texttt{up} koja kreira ili modificira tablice, stupce ili indekse u bazi podataka te \texttt{down} koja bi trebala poništiti promjene učinjene u \texttt{up} metodi inverznim operacijama~\cite{migrations}.
 
 U ispisu~\ref{projectsTableMigration} možemo vidjeti k\^od migracije za kreiranje tablice \texttt{projects} u kojoj u \texttt{up} metodi kreiramo tablicu navodeći njezin naziv i stupce koje sadrži, a u \texttt{down} metodi poništavamo operacije izvedene u \texttt{up} metodi na način da se odbacuje novokreirana tablica tj. izvodi \textit{drop} tablice.
 
@@ -201,7 +201,7 @@ return new class extends Migration
 
 \end{lstlisting}
 
-Za izvršiti sve migracije koje se još nisu primjenile na bazu podataka pokreće se Artisan naredba \texttt{migrate}, a za povratak na prethodnu migraciju tj. poništavanje promjena posljednjih \textit{n} migracija Artisan naredba \texttt{migrate:rollback}.
+Za izvršiti sve migracije koje se još nisu primjenile na bazu podataka pokreće se Artisan naredba \texttt{migrate}, a za povratak na prethodnu migraciju tj. poništavanje promjena posljednjih \textit{n} migracija Artisan naredba \texttt{migrate:rollback}~\cite{migrations}.
 
 \subsubsection{Populacija podatcima (engl. \textit{seeding})}
 
