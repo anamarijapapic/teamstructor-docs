@@ -19,7 +19,7 @@ cd teamstructor-app
 composer require laravel/jetstream
 \end{lstlisting}
 
-Jetstream pruža izbor između korištenja \textbf{Livewire} ili Inertia.js \textit{frontend scaffoldinga}. O tom izboru ovisi i odabrani jezik za predloške (engl. \textit{templating language}) jer uz Livewire to je \textbf{Blade}, a uz Inertia.js to je Vue.js~\cite{jetstreamIntro}. \\ Za instaliranje Jetstreama s Livewire \textit{frontend scaffoldingom} i to s uključenom podrškom za timove koristi se naredba \texttt{php artisan jetstream:install livewire -{}-teams}~\cite{jetstreamInstallation}.
+Jetstream pruža izbor između korištenja \textbf{Livewire} ili Inertia.js \textit{frontend scaffoldinga}. O tom izboru ovisi i odabrani jezik za predloške (engl. \textit{templating language}) jer uz Livewire to je \textbf{Blade}, a uz Inertia.js to je Vue.js~\cite{jetstreamIntro}. \\ Za instaliranje Jetstreama s Livewire \textit{frontend scaffoldingom} i to s uključenom podrškom za timove koristi se naredba \\ \texttt{php artisan jetstream:install livewire -{}-teams}~\cite{jetstreamInstallation}.
 
 \texttt{php artisan vendor:publish -{}-tag=jetstream-views} je naredba čijim se izvršavanjem u \texttt{app} direktoriju kreira direktorij \texttt{resources/view/components} koji sadrži razne generičke Blade komponente čija je svrha da ih se jednostavno može koristiti te pružanje konzistentnog korisničkog sučelja bez potrebe da developer kreira vlastite komponente~\cite{jetstreamLivewire}.
 
@@ -115,7 +115,7 @@ Radi preglednosti su na dijagramu sa slike~\ref{fig:erDiagram} prikazane samo ta
 \item \texttt{password\_reset\_tokens} - Automatski prisutna u Laravel aplikacijama, služi za pohranu tokena za ponovno postavljanje lozinki u aplikaciji.
 \item \texttt{personal\_access\_tokens} - Kreira ju Laravel Sanctum pri instalaciji Laravel Jetstreama, a služi za pohranu API tokena u aplikaciji.
 \item \texttt{sessions} - Kada se koristi \texttt{database} \textit{driver} za sesije, onda se u ovu tablicu iste pohranjuju.
-\item \texttt{telescope\_entries}, \texttt{telescope\_entries\_tags}, \texttt{telescope\_monitoring} - Nastaju pri instalaciji Laravel Telescopea, a služe za pohranu podataka za Telescope.
+\item \texttt{telescope\_entries}, \texttt{telescope\_entries\_tags}, \\ \texttt{telescope\_monitoring} - Nastaju pri instalaciji Laravel Telescopea, a služe za pohranu podataka za Telescope.
 \end{itemize}
 
 U poglavlju~\ref{subsection:dbInteraction} će biti više rečeno o načinima na koje se ostvaruje interakcija s bazom podataka te o samim modelima i relacijama.
@@ -204,7 +204,7 @@ return new class extends Migration
 Za izvršiti sve migracije koje se još nisu primjenile na bazu podataka pokreće se Artisan naredba \texttt{migrate}, a za povratak na prethodnu migraciju tj. poništavanje promjena posljednjih \textit{n} migracija Artisan naredba \texttt{migrate:rollback}~\cite{migrations}.
 
 \subsubsection{Populacija podatcima}
-Populacija baze podataka (engl. \textit{seeding}) u Laravelu se može obaviti koristeći \textit{seed} klase koje se nalaze u direktoriju \texttt{database/seeders}. Ondje se zadano nalazi \texttt{DatabaseSeeder} klasa koja sadrži metodu \texttt{run} koja se izvršava pozivom \texttt{db:seed} Artisan naredbe. Unutar metode \texttt{run} koristeći se metodom \texttt{call} pozivaju se dodatni ostali u aplikaciji definirani \textit{seederi}. Dobra je praksa \textit{seeding} k\^od podijeliti u više dijelova tj. \textit{seed} klasa jer se tako ne "zatrpava" isključivo jedan \textit{seeder} k\^odom. U ispisu~\ref{databaseSeeder} može se vidjeti \textit{seedere} pozvane koristeći metodu \texttt{call}~\cite{seeding}.
+Populacija baze podataka (engl. \textit{seeding}) u Laravelu se može obaviti koristeći \textit{seed} klase koje se nalaze u direktoriju \texttt{database/seeders}. Ondje se zadano nalazi \\ \texttt{DatabaseSeeder} klasa koja sadrži metodu \texttt{run} koja se izvršava pozivom \texttt{db:seed} Artisan naredbe. Unutar metode \texttt{run} koristeći se metodom \texttt{call} pozivaju se dodatni ostali u aplikaciji definirani \textit{seederi}. Dobra je praksa \textit{seeding} k\^od podijeliti u više dijelova tj. \textit{seed} klasa jer se tako ne "zatrpava" isključivo jedan \textit{seeder} k\^odom. U ispisu~\ref{databaseSeeder} može se vidjeti \textit{seedere} pozvane koristeći metodu \texttt{call}~\cite{seeding}.
 
 \begin{lstlisting}[caption={Sadržaj \texttt{DatabaseSeeder} klase}, label=databaseSeeder]
 <?php
@@ -327,7 +327,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
     
-...
+// ...
 \end{lstlisting}
 
 U ispisu~\ref{modelUser} možemo primjetiti da model \texttt{User} koristi osobinu \texttt{HasFactory}. Pomoću tvornica modela (engl. \textit{model factories}) može se definirati skup zadanih atributa za određeni Eloquent model pa je olakšano populiranje baze podataka sa testnim zapisima. Tvornica modela može se generirati Artisan naredbom \texttt{make:factory} te će se nalaziti u \texttt{database/factories} direktoriju~\cite{factories}.
@@ -375,7 +375,7 @@ class UserFactory extends Factory
         ];
     }
     
-...
+// ...
 \end{lstlisting}
 
 Također, tvornicama modela možemo definirati stanja (engl. \textit{factory states}) koja predstavljaju način da se primijene diskretne izmjene tj. modificiraju atributi na nekoj tvornici modela. U ispisu~\ref{factoryStatesUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje se definira stanje tvornice modela za stvaranje administrator korisnika. Vidljivo je da to stanje vrši izmjene samo na odabranim atributima, a ostali atributi će biti postavljeni kao u izvornoj definiciji tvornice modela~\cite{factories}.
@@ -455,22 +455,22 @@ Model \texttt{User} definira veze prema modelima \texttt{Project}, \texttt{Post}
     }
 \end{lstlisting}
 
-Model \texttt{Team} definira veze prema modelu \texttt{Project}, kao što je vidljivo u ispisu~\ref{relationsTeam}, a nasljeđujući model \texttt{JetstreamTeam} definirane su veze prema modelima \texttt{User}, \texttt{Membership} i \texttt{TeamInvitation} te su te metode prikazane u ispisu~\ref{relationsJetstreamTeam}.
+Model \texttt{Team} definira veze prema modelu \texttt{Project}, kao što je vidljivo u ispisu~\ref{relationsTeam}, a nasljeđujući model \texttt{JetstreamTeam} definirane su veze prema modelima \texttt{User}, \\ \texttt{Membership} i \texttt{TeamInvitation} te su te metode prikazane u ispisu~\ref{relationsJetstreamTeam}.
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Team}}, label=relationsTeam]
 <?php
 
 namespace App\Models;
 
-...
+// ...
 use Illuminate\Database\Eloquent\Relations\HasMany;
-...
+// ...
 use Laravel\Jetstream\Team as JetstreamTeam;
 
 class Team extends JetstreamTeam
 {
 
-...
+// ...
 
     /**
      * Get the projects for the team.
@@ -480,7 +480,7 @@ class Team extends JetstreamTeam
         return $this->hasMany(Project::class)->latest();
     }
     
-...
+// ...
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Team} koje nasljeđuje od modela \texttt{JetstreamTeam}}, label=relationsJetstreamTeam]
@@ -532,14 +532,14 @@ Model \texttt{Membership} je pivotni model (između modela \texttt{Team} i \text
     }
 \end{lstlisting}
 
-Model \texttt{Project} definira veze prema modelima \texttt{Team}, \texttt{User} i \texttt{Post} vidljivo u ispisu~\ref{relationsProject}, te implementirajući \textit{interface} \texttt{HasMedia} i koristeći osobinu \texttt{InteractsWithMedia} definira i vezu prema modelu \texttt{Resource} vidljivo u ispisu~\ref{relationsProjectTrait}.
+Model \texttt{Project} definira veze prema modelima \texttt{Team}, \texttt{User} i \texttt{Post} vidljivo u ispisu~\ref{relationsProject}, te implementirajući \textit{interface} \texttt{HasMedia} i koristeći osobinu \\ \texttt{InteractsWithMedia} definira i vezu prema modelu \texttt{Resource} vidljivo u ispisu~\ref{relationsProjectTrait}.
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Project}}, label=relationsProject]
 <?php
 
 namespace App\Models;
 
-...
+// ...
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -548,10 +548,10 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Project extends Model implements HasMedia
 {
-    ...
+    // ...
     use InteractsWithMedia;
     
-    ...
+    // ...
     
     /**
      * Get the team that owns the project.
@@ -579,7 +579,7 @@ class Project extends Model implements HasMedia
                     ->latest();
     }
     
-...
+// ...
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Project} koje koristi iz osobine \texttt{InteractsWithMedia}}, label=relationsProjectTrait]
@@ -669,9 +669,9 @@ use App\Http\Livewire\Projects\ShowProjects;
 use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
+|------------------------------------------------------------------------
 | Web Routes
-|--------------------------------------------------------------------------
+|------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
@@ -731,6 +731,99 @@ Izvršavanjem Artisan naredbe \texttt{route:list} mogu se izlistati sve rute def
 \end{figure}
 
 \subsection{Middleware}
+\textit{Middleware}, srednji sloj Laravel web aplikacije, mehanizam je za pregled, filtriranje i kontrolu korisničkih HTTP zahtjeva koji dolaze aplikaciji. Nekoliko \textit{middlewarea} zadano je uključeno u razvojni okvir Laravel, uključujući onaj za autentikaciju i CSRF zaštitu. Sve \textit{middleware} klase nalaze se u direktoriju \texttt{app/Http/Middleware} te se novi \textit{middleware} može stvoriti Artisan naredbom \texttt{make:middleware}~\cite{middleware}.
+
+U ispisu~\ref{configureLocaleMiddleware} prikazan je \texttt{ConfigureLocale} \textit{middleware} napisan za potrebe implementacije lokalizacije.
+
+\begin{lstlisting}[caption={\textit{Middleware} \texttt{ConfigureLocale}}, label=configureLocaleMiddleware]
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\Response;
+
+class ConfigureLocale
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        if ($request->has('locale')) {
+            $locale = $request->get('locale');
+            Session::put('locale', $locale);
+        }
+
+        if (Session::has('locale') && array_key_exists(Session::get('locale'), config('locales'))) {
+            App::setLocale(Session::get('locale'));
+        } else {
+            App::setLocale(config('app.fallback_locale'));
+        }
+
+        return $next($request);
+    }
+}
+
+\end{lstlisting}
+
+Pojedini \textit{middleware} treba se registrirati u aplikaciji - ako se želi da je aktivan globalno dodaje ga se među vrijednosti podatkovnog člana \texttt{\$middleware} klase \\ \texttt{app/Http/Kernel.php}, a ako se želi da djeluje na pojedinoj ruti na nju ga se dodaje pomoću metode \texttt{middleware}. Radi jednostavnosti i praktičnosti, unutar klase \\ \texttt{app/Http/Kernel.php} u podatkovnom članu \texttt{\$middlewareAliases} pojedinom \textit{middlewareu} se može nadjenuti \textit{alias} ime~\cite{middleware} (pogledati ispis~\ref{middlewareAliases}).
+
+\begin{lstlisting}[caption={Definiranje \textit{middleware} \textit{aliasa}}, label=middlewareAliases]
+    /**
+     * The application's middleware aliases.
+     *
+     * Aliases may be used to conveniently assign middleware to routes and groups.
+     *
+     * @var array<string, class-string|string>
+     */
+    protected $middlewareAliases = [
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'signed' => \App\Http\Middleware\ValidateSignature::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'locale' => \App\Http\Middleware\ConfigureLocale::class,
+    ];
+\end{lstlisting}
+
+Različite \textit{middleware} klase može se međusobno grupirati pod istim ključem (engl. \textit{key}) u prethodno navedenoj \texttt{Kernel} klasi  koristeći podatkovni član \texttt{\$middlewareGroups}~\cite{middleware} (pogledati ispis~\ref{middlewareGroups}).
+
+
+\begin{lstlisting}[caption={Definiranje \textit{middleware} grupa}, label=middlewareGroups]
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array<string, array<int, class-string|string>>
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\ConfigureLocale::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+
+        'api' => [
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+    ];
+\end{lstlisting}
 
 \subsection{Autentikacija}
 
@@ -758,14 +851,7 @@ Izvršavanjem Artisan naredbe \texttt{route:list} mogu se izlistati sve rute def
 \subsection{Testiranje i kvaliteta k\^oda}
 
 \subsubsection{Korišteni alati}
-
-\paragraph{Laravel Debug Bar}
-
-\paragraph{Laravel Telescope}
-
-\paragraph{Laravel Pint}
-
-\subsubsection{Pretpregled elektroničke pošte - MailHog}
+\textbf{Laravel Debug Bar}, \textbf{Laravel Telescope}, \textbf{Laravel Pint}, pretpregled elektroničke pošte - \textbf{MailHog}
 
 \subsubsection{Pisanje i pokretanje testova}
 
