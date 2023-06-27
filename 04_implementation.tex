@@ -3,7 +3,7 @@
 \subsection{Instalacija i konfiguracija okruženja}
 
 \subsubsection{Početni komplet Laravel Jetstream}
-Kako bi developerima uštedio vrijeme u samome početku razvijanja nove aplikacije, Laravel nudi autentikacijske i aplikacijske početne komplete (engl.~\textit{starter kits}) kao što su Laravel Breeze i Laravel Jetstream koji automatski pružaju rute, kontrolere i poglede (engl. \textit{views}) potrebne za registraciju i autentikaciju~\cite{starterKits}.
+Kako bi \textit{developerima} uštedio vrijeme u samome početku razvijanja nove aplikacije, Laravel nudi autentikacijske i aplikacijske početne komplete (engl.~\textit{starter kits}) kao što su Laravel Breeze i Laravel Jetstream koji automatski pružaju rute, kontrolere i poglede (engl. \textit{views}) potrebne za registraciju i autentikaciju~\cite{starterKits}.
 
 Laravel Jetstream dizajniran je koristeći \textbf{Tailwind CSS}, \textit{utility-first} CSS razvojni okvir. Datoteke \texttt{postcss.config.js} i \texttt{tailwind.config.js} koriste se pri \textit{buildanju} kompajliranog CSS-a aplikacije.
 
@@ -26,7 +26,7 @@ Jetstream pruža izbor između korištenja \textbf{Livewire} ili Inertia.js \tex
 Nakon instalacije Jetstreama potrebno je instalirati i pokrenuti \textit{build} NPM ovisnosti pomoću naredbi \texttt{npm install} i \texttt{npm run build} te migrirati bazu naredbom \texttt{php artisan migrate}~\cite{jetstreamInstallation}.
 
 \subsubsection{\texttt{.env} datoteka}
-\texttt{.env} datoteka nalazi se u aplikacijskom root direktoriju i služi kao konfiguracijska datoteka za Laravel web aplikaciju. Pri instalaciji Laravela kreirana je tako da se u nju kopira ogledna konfiguracijska datoteka \texttt{.env.example}~\cite{configuration}. 
+\texttt{.env} datoteka nalazi se u aplikacijskom \textit{root} direktoriju i služi kao konfiguracijska datoteka za Laravel web aplikaciju. Pri instalaciji Laravela kreirana je tako da se u nju kopira ogledna konfiguracijska datoteka \texttt{.env.example}~\cite{configuration}. 
 
 Dobra je praksa i zbog sigurnosti i zbog toga što je konfiguracija promjenjiva ovisno o pojedinačnim okruženjima da neenkriptirana \texttt{.env} datoteka nije dio kontrole izvornog k\^oda aplikacije, dok je to u redu za \texttt{.env.example} datoteku te ista može poslužiti kao ogledni primjer s \textit{placeholder} vrijednostima za varijable koje je potrebno definirati~\cite{configuration}.
 
@@ -85,7 +85,7 @@ Na slici~\ref{fig:appDir} prikazan je sadržaj \texttt{app} direktorija.
 	\label{fig:appDir}
 \end{figure}
 
-Možemo vidjeti da se \texttt{app} direktorij sastoji od sljedećih poddirektorija~\cite{structure}: 
+Može se vidjeti da se \texttt{app} direktorij sastoji od sljedećih poddirektorija~\cite{structure}: 
 \begin{itemize}
 \item \texttt{Actions} - Direktorij koji se kreira pri Jetstream instalaciji, a sadrži \texttt{Action} klase koje obično izvode samo jednu akciju i odgovaraju jednoj Jetstream ili Fortify značajki kao npr. kreiranje korisnika ili tima,  postavljanje nove lozinke, brisanje korisnika ili tima, dodavanje člana u tim itd.~\cite{jetstreamActions}
 \item \texttt{Console} - Sadrži datoteku \texttt{Kernel.php} u kojoj se registriraju \textit{custom} Artisan naredbe.
@@ -100,7 +100,7 @@ Možemo vidjeti da se \texttt{app} direktorij sastoji od sljedećih poddirektori
 Još nekolicina direktorija može biti generirana unutar \texttt{app} direktorija izvršavanjem Artisan \texttt{make} naredbi za generiranje klasa~\cite{structure}. 
 
 \subsection{Struktura relacijske baze podataka}
-Na slici~\ref{fig:erDiagram} prikazan je ER (engl. \textit{Entity Relationship}) dijagram relacijske baze podataka u phpMyAdmin sučelju na kojemu možemo vidjeti tablice u koje su podatci spremani te njihove međusobne relacije.
+Na slici~\ref{fig:erDiagram} prikazan je ER (engl. \textit{Entity Relationship}) dijagram relacijske baze podataka u phpMyAdmin sučelju na kojemu se može vidjeti tablice u koje su podatci spremani te njihove međusobne relacije.
 \begin{figure}[H]
 	\includegraphics[width=1\linewidth,clip=]{assets/db-er-diagram.png}
 	\centering
@@ -114,7 +114,7 @@ Radi preglednosti su na dijagramu sa slike~\ref{fig:erDiagram} prikazane samo ta
 \item \texttt{migrations} - Automatski prisutna u Laravel aplikacijama, služi za pohranu migracija.
 \item \texttt{password\_reset\_tokens} - Automatski prisutna u Laravel aplikacijama, služi za pohranu tokena za ponovno postavljanje lozinki u aplikaciji.
 \item \texttt{personal\_access\_tokens} - Kreira ju Laravel Sanctum pri instalaciji Laravel Jetstreama, a služi za pohranu API tokena u aplikaciji.
-\item \texttt{sessions} - Kada se koristi \texttt{database} \textit{driver} za sesije, onda se u ovu tablicu iste pohranjuju.
+\item \texttt{sessions} - Kada se koristi \texttt{database} \textit{driver} za sesije, onda se u ovu tablicu one pohranjuju.
 \item \texttt{telescope\_entries}, \texttt{telescope\_entries\_tags}, \\ \texttt{telescope\_monitoring} - Nastaju pri instalaciji Laravel Telescopea, a služe za pohranu podataka za Telescope.
 \end{itemize}
 
@@ -130,7 +130,7 @@ Migracija se može kreirati pozivom \texttt{make:migration} Artisan naredbe te �
 
 Sama migracijska klasa sadrži dvije metode: \texttt{up} koja kreira ili modificira tablice, stupce ili indekse u bazi podataka te \texttt{down} koja bi trebala poništiti promjene učinjene u \texttt{up} metodi inverznim operacijama~\cite{migrations}.
 
-U ispisu~\ref{projectsTableMigration} možemo vidjeti k\^od migracije za kreiranje tablice \texttt{projects} u kojoj u \texttt{up} metodi kreiramo tablicu navodeći njezin naziv i stupce koje sadrži, a u \texttt{down} metodi poništavamo operacije izvedene u \texttt{up} metodi na način da se odbacuje novokreirana tablica tj. izvodi \textit{drop} tablice.
+U ispisu~\ref{projectsTableMigration} može se vidjeti k\^od migracije za kreiranje tablice \texttt{projects} u kojoj se u \texttt{up} metodi kreira tablica navodeći njezin naziv i stupce koje sadrži, a u \texttt{down} metodi poništavaju operacije izvedene u \texttt{up} metodi na način da se odbacuje novokreirana tablica tj. izvodi \textit{drop} tablice.
 
 \begin{lstlisting}[caption={Migracija za kreiranje tablice \texttt{projects}}, label=projectsTableMigration]
 <?php
@@ -167,7 +167,7 @@ return new class extends Migration
 
 \end{lstlisting}
 
-U ispisu~\ref{administratorColumnMigration} prikazana je migracija koja modificira tablicu \texttt{users} tako da joj dodaje stupac \texttt{is\_administrator}. U \texttt{up} metodi definira se stupac koji će se dodati, a u \texttt{down} metodi te promjene će biti poništene odbacivanjem novododanog stupca metodom \texttt{dropColumn}.
+U ispisu~\ref{administratorColumnMigration} prikazana je migracija koja modificira tablicu \texttt{users} tako da joj dodaje stupac \texttt{is\_administrator}. U \texttt{up} metodi definira se stupac koji će se dodati, a u \texttt{down} metodi te će promjene biti poništene odbacivanjem novododanog stupca metodom \texttt{dropColumn}.
 
 \begin{lstlisting}[caption={Migracija za dodavanje stupca \texttt{is\_administrator} u tablicu \texttt{users}}, label=administratorColumnMigration]
 <?php
@@ -201,7 +201,7 @@ return new class extends Migration
 
 \end{lstlisting}
 
-Za izvršiti sve migracije koje se još nisu primjenile na bazu podataka pokreće se Artisan naredba \texttt{migrate}, a za povratak na prethodnu migraciju tj. poništavanje promjena posljednjih \textit{n} migracija Artisan naredba \texttt{migrate:rollback}~\cite{migrations}.
+Za izvršiti sve migracije koje se još nisu primijenile na bazu podataka pokreće se Artisan naredba \texttt{migrate}, a za povratak na prethodnu migraciju tj. poništavanje promjena posljednjih \textit{n} migracija Artisan naredba \texttt{migrate:rollback}~\cite{migrations}.
 
 \subsubsection{Populacija podatcima}
 Populacija baze podataka (engl. \textit{seeding}) u Laravelu se može obaviti koristeći \textit{seed} klase koje se nalaze u direktoriju \texttt{database/seeders}. Ondje se zadano nalazi \\ \texttt{DatabaseSeeder} klasa koja sadrži metodu \texttt{run} koja se izvršava pozivom \texttt{db:seed} Artisan naredbe. Unutar metode \texttt{run} koristeći se metodom \texttt{call} pozivaju se dodatni ostali u aplikaciji definirani \textit{seederi}. Dobra je praksa \textit{seeding} k\^od podijeliti u više dijelova tj. \textit{seed} klasa jer se tako ne "zatrpava" isključivo jedan \textit{seeder} k\^odom. U ispisu~\ref{databaseSeeder} može se vidjeti \textit{seedere} pozvane koristeći metodu \texttt{call}~\cite{seeding}.
@@ -260,7 +260,7 @@ Naziv klase modela&Naziv odgovarajuće tablice\\
 \hline
 \end{longtable}
 
-U klasi modela definiramo njegove atribute (\textit{fillable} - one koji su \textit{mass assignable} tj. dozvoljeno je da ih dodijele korisnici aplikacije te \textit{hidden} - one koji su skriveni pri serijalizaciji), relacije (o kojima će biti više riječi u poglavlju~\ref{paragraph:relations}), \textit{traits} tj. osobine koje koristi, događaje koje šalje itd.
+U klasi modela definiraju se njegovi atributi (\textit{fillable} - one koji su \textit{mass assignable} tj. dozvoljeno je da ih dodijele korisnici aplikacije te \textit{hidden} - one koji su skriveni pri serijalizaciji), relacije (o kojima će biti više riječi u poglavlju~\ref{paragraph:relations}), \textit{traits} tj. osobine koje koristi, događaje koje emitira itd.
 
 U ispisu~\ref{modelUser} prikazan je dio k\^oda iz klase modela \texttt{User} gdje je vidljivo da koristi nekolicinu osobina (engl. \textit{traits}) te definiranje atributa modela.
 
@@ -330,7 +330,7 @@ class User extends Authenticatable
 // ...
 \end{lstlisting}
 
-U ispisu~\ref{modelUser} možemo primjetiti da model \texttt{User} koristi osobinu \texttt{HasFactory}. Pomoću tvornica modela (engl. \textit{model factories}) može se definirati skup zadanih atributa za određeni Eloquent model pa je olakšano populiranje baze podataka sa testnim zapisima. Tvornica modela može se generirati Artisan naredbom \texttt{make:factory} te će se nalaziti u \texttt{database/factories} direktoriju~\cite{factories}.
+U ispisu~\ref{modelUser} može se primjetiti da model \texttt{User} koristi osobinu \texttt{HasFactory}. Pomoću tvornica modela (engl. \textit{model factories}) može se definirati skup zadanih atributa za određeni Eloquent model pa je olakšano populiranje baze podataka sa testnim zapisima. Tvornica modela može se generirati Artisan naredbom \texttt{make:factory} te će se nalaziti u \texttt{database/factories} direktoriju~\cite{factories}.
 
 U ispisu~\ref{factoryUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje je vidljiva metoda \texttt{definition} koja vraća skup atributa koji bi se trebali primijeniti na model pri njegovom kreiranju. Za generiranje testnih lažnih podataka koristi se Faker~\cite{fakerGitHub} PHP biblioteka čija je instanca u \texttt{\$this->faker}~\cite{factories}.
 
@@ -378,7 +378,7 @@ class UserFactory extends Factory
 // ...
 \end{lstlisting}
 
-Također, tvornicama modela možemo definirati stanja (engl. \textit{factory states}) koja predstavljaju način da se primijene diskretne izmjene tj. modificiraju atributi na nekoj tvornici modela. U ispisu~\ref{factoryStatesUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje se definira stanje tvornice modela za stvaranje administrator korisnika. Vidljivo je da to stanje vrši izmjene samo na odabranim atributima, a ostali atributi će biti postavljeni kao u izvornoj definiciji tvornice modela~\cite{factories}.
+Također, tvornicama modela mogu se definirati stanja (engl. \textit{factory states}) koja predstavljaju način da se primijene diskretne izmjene tj. modificiraju atributi na nekoj tvornici modela. U ispisu~\ref{factoryStatesUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje se definira stanje tvornice modela za stvaranje administrator korisnika. Vidljivo je da to stanje vrši izmjene samo na odabranim atributima, a ostali će atributi biti postavljeni kao u izvornoj definiciji tvornice modela~\cite{factories}.
 
 \begin{lstlisting}[caption={Dio k\^oda tvornice modela \texttt{UserFactory} koji prikazuje definiciju stanja tvornice modela}, label=factoryStatesUser]
     /**
@@ -398,7 +398,7 @@ Također, tvornicama modela možemo definirati stanja (engl. \textit{factory sta
 
 \paragraph{Relacije}
 \label{paragraph:relations}\mbox{}\\
-\indent Odnosi tj. relacije između modela definiraju se unutar samih klasa Eloquent modela kao metode. Možemo ponovno pogledati sliku~\ref{fig:erDiagram} i obratiti pozornost na veze među modelima.
+\indent Odnosi tj. relacije između modela definiraju se unutar samih klasa Eloquent modela kao metode. Može se ponovno pogledati sliku~\ref{fig:erDiagram} i obratiti pozornost na veze među modelima.
 
 Model \texttt{User} definira veze prema modelima \texttt{Project}, \texttt{Post} i \texttt{Comments} kao što je vidljivo u ispisu~\ref{relationsUser}, a u osobini \texttt{HasTeams} koju model koristi definirane su veze prema modelima \texttt{Team} i \texttt{Membership} te su te metode prikazane u ispisu~\ref{relationsUserTrait}.
 
@@ -635,7 +635,7 @@ Model \texttt{Post} definira veze prema modelima \texttt{Project}, \texttt{User}
     }
 \end{lstlisting}
 
-Model \texttt{Resource} nasljeđujući model \texttt{Media} iz Spatie Media Library paketa definira vezu prema modelu \texttt{Project}, prikazano u ispisu~\ref{relationsMedia}.
+Model \texttt{Resource}, nasljeđujući model \texttt{Media} iz Spatie Media Library paketa, definira vezu prema modelu \texttt{Project}, prikazano u ispisu~\ref{relationsMedia}.
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Resource} koje nasljeđuje od modela \texttt{Media}}, label=relationsMedia]
 public function model(): MorphTo
@@ -644,7 +644,7 @@ public function model(): MorphTo
 }
 \end{lstlisting}
 
-U ovim prethodno navedenim odnosima među modelima primjećujemo da su korištene Eloquent relacije \texttt{HasMany} i inverzna joj \texttt{BelongsTo} - koje označavaju vezu jedan prema više (1:N) odnosno više prema jedan (N:1). Za ostvarivanje veze više prema više (N:M) korištena je Eloquent relacija \texttt{BelongsToMany}. Također su korištene i polimorfne Eloquent relacije \texttt{MorphMany} i inverzna joj \texttt{MorphTo} - koje označavaju polimofnu vezu (neovisnu o tipu modela) jedan prema više (1:N) odnosno više prema jedan (N:1)~\cite{relationships}.
+U ovim prethodno navedenim odnosima među modelima može se primijetiti da su korištene Eloquent relacije \texttt{HasMany} i inverzna joj \texttt{BelongsTo} - koje označavaju vezu jedan prema više (1:N) odnosno više prema jedan (N:1). Za ostvarivanje veze više prema više (N:M) korištena je Eloquent relacija \texttt{BelongsToMany}. Također su korištene i polimorfne Eloquent relacije \texttt{MorphMany} i inverzna joj \texttt{MorphTo} - koje označavaju polimofnu vezu (neovisnu o tipu modela) jedan prema više (1:N) odnosno više prema jedan (N:1)~\cite{relationships}.
 
 \paragraph{Kolekcije}\mbox{}\\
 \indent U Laravelu postoji bazna klasa \texttt{Illuminate\textbackslash Support\textbackslash Collection} koja pruža praktičan \textit{wrapper} (omotač) za rad s nizovima podataka. Eloquent upiti tj. sve Eloquent metode koje vraćaju više od jednog rezultata vraćaju instancu klase \\ \texttt{Illuminate\textbackslash Database\textbackslash Eloquent\textbackslash Collection}. Objekt Eloquent kolekcija nasljeđuje baznu Laravel kolekciju pa tako nasljeđuje i sve metode dosupne u baznoj klasi~\cite{eloquentCollections}.
@@ -654,7 +654,7 @@ Neke od najkorištenijih metoda su \texttt{all}, \texttt{count}, \texttt{dd}, \t
 \subsection{Usmjerivanje zahtjeva (engl. \textit{routing})}
 Sve rute u Laravel aplikaciji definirane su unutar datoteka koje se nalaze unutar direktorija \texttt{routes}. Te su datoteke automatski učitane zahvaljujući \\ \texttt{App\textbackslash Providers\textbackslash RouteServiceProvider}. U datoteci \texttt{routes/web.php} definirane su rute korištene na aplikacijskom web sučelju, koje se mogu dohvatiti unosom URL-a u web preglednik. Rutama iz \texttt{routes/web.php} dodijeljena je \texttt{web} \textit{middleware} grupa koja pruža značajke kao što su stanje sesija i CSRF (engl. \textit{Cross-Site Request Forgery}) zaštita~\cite{routing}.
 
-Ispis~\ref{routes} prikazuje sadržaj datoteke \texttt{routes/web.php} gdje je vidljiv način na koji su rute definirane. Podijeljene su u prvenstveno u dvije grupe - prva dostupna svim prijavljenim korisnicima (grupa koristi \textit{middleware} koji zahtijeva autentikaciju), te druga dostupna samo admin korisnicima (korišten \textit{custom} \textit{middleware} \texttt{can:admin-privileges}), a zadnja defnirana ruta je ona koju koristi kontoler pri promjeni jezika aplikacije o čemu će biti riječi u poglavlju~\ref{subsection:localization}. Svakoj ruti dodijeljeno je jedinstveno ime koristeći metodu \texttt{name}.
+Ispis~\ref{routes} prikazuje sadržaj datoteke \texttt{routes/web.php} gdje je vidljiv način na koji su rute definirane. Podijeljene su prvenstveno u dvije grupe - prva dostupna svim prijavljenim korisnicima (grupa koristi \textit{middleware} koji zahtijeva autentikaciju), te druga dostupna samo admin korisnicima (korišten \textit{custom} \textit{middleware} \texttt{can:admin-privileges}), a zadnja defnirana ruta je ona koju koristi kontoler pri promjeni jezika aplikacije o čemu će biti riječi u poglavlju~\ref{subsection:localization}. Svakoj ruti dodijeljeno je jedinstveno ime koristeći metodu \texttt{name}.
 
 \begin{lstlisting}[caption={Sadržaj datoteke \texttt{routes/web.php}}, label=routes]
 <?php
@@ -844,7 +844,7 @@ Na slici~\ref{fig:register} prikazano je pristupanje ruti \texttt{register} unut
 \end{figure}
 
 \subsection{Autorizacija}
-U Laravelu postoje dva osnovna načina na koji se autoriziraju akcije - koristeći vrata (engl. \textit{gates}) ili koristeći politike (engl. \textit{policies}). Vrata su najprimjenjivija za autorizaciju akcija koje nisu vezane uz model ili resurs već su općenite za cijelu aplikaciju, a politike su namijenjene za autorizaciju akcija nad određenim modelom/resursom~\cite{authorization}.
+U Laravelu postoje dva osnovna načina na koji se autoriziraju akcije - koristeći vrata (engl. \textit{gates}) ili koristeći politike (engl. \textit{policies}). Vrata je najbolje primjenjivati za autorizaciju akcija koje nisu vezane uz model ili resurs već su općenite za cijelu aplikaciju, a politike su namijenjene za autorizaciju akcija nad određenim modelom/resursom~\cite{authorization}.
 
 \subsubsection{Vrata}
 Vrata (engl. \textit{gates}) određuju ima li korisnik ovlasti za izvršavanje određene radnje. Obično se definiraju unutar \texttt{boot} metode u klasi \\ {\texttt{App\textbackslash Providers\textbackslash AuthServiceProvider}} koristeći fasadu \texttt{Gate}~\cite{authorization}.
