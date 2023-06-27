@@ -826,12 +826,145 @@ Različite \textit{middleware} klase može se međusobno grupirati pod istim klj
 \end{lstlisting}
 
 \subsection{Autentikacija}
+Početni komplet Laravel Jetstream u potpunosti se pobrinuo za cjelokupan autentikacijski sustav aplikacije na način da koristi autentikacijske servise Laravel Fortifyja, uz to pruživši robustan i moderan \textit{scaffolding} korisničkog sučelja. Laravel autentikacijskim servisima može se pristupiti putem fasade (engl. \textit{facade}) \texttt{Auth}~\cite{authentication}.
+
+Na slici~\ref{fig:register} prikazano je pristupanje ruti \texttt{register} unutar web preglednika, a na slici~\ref{fig:login} ruti \texttt{login}.
+\begin{figure}[H]
+	\includegraphics[width=1\linewidth,clip=]{assets/register.png}
+	\centering
+	\caption{\texttt{/register}}
+	\label{fig:register}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=1\linewidth,clip=]{assets/login.png}
+	\centering
+	\caption{\texttt{/login}}
+	\label{fig:login}
+\end{figure}
 
 \subsection{Autorizacija}
+U Laravelu postoje dva osnovna načina na koji se autoriziraju akcije - koristeći vrata (engl. \textit{gates}) ili koristeći politike (engl. \textit{policies}). Vrata su najprimjenjivija za autorizaciju akcija koje nisu vezane uz model ili resurs već su općenite za cijelu aplikaciju, a politike su namijenjene za autorizaciju akcija nad određenim modelom/resursom~\cite{authorization}.
 
-\subsubsection{Politike (engl. \textit{policies})}
+\subsubsection{Vrata}
+Vrata (engl. \textit{gates}) određuju ima li korisnik ovlasti za izvršavanje određene radnje. Obično se definiraju unutar \texttt{boot} metode u klasi \\ {\texttt{App\textbackslash Providers\textbackslash AuthServiceProvider}} koristeći fasadu \texttt{Gate}~\cite{authorization}.
 
-\subsubsection{Vrata (engl. \textit{gates})}
+U ispisu~\ref{gatesAdmin} prikazana je \texttt{boot} metoda u kojoj se definiraju vrata \\ \texttt{'admin-privileges'} te se koristeći metodu \texttt{before} definira \textit{closure} koji će biti provjeravan prije svih ostalih autorizacijskih provjera.
+
+\begin{lstlisting}[caption={Vrata korištena za implementaciju admin korisnika i administratorskog sučelja}, label=gatesAdmin]
+    /**
+     * Register any authentication / authorization services.
+     */
+    public function boot(): void
+    {
+        $this->registerPolicies();
+
+        Gate::define('admin-privileges', function ($user) {
+            return $user->isAdministrator()
+                ? Response::allow()
+                : Response::deny(__('You must be an administrator.'));
+        });
+
+        Gate::before(function (User $user, string $ability) {
+            if ($user->isAdministrator()) {
+                return true;
+            }
+        });
+    }
+\end{lstlisting}
+
+\subsubsection{Politike}
+Politike (engl. \textit{policies}) su klase čija je zadaća organizacija autorizacijske logike pojedinog modela/resursa. Generiraju se pozivom Artisan naredbe \texttt{make:policy} te se nalaze unutar direktorija \texttt{app/Policies}. Kreirane politike potrebno je registrirati unutar podatkovnog člana \texttt{\$policies} klase {\texttt{App\textbackslash Providers\textbackslash AuthServiceProvider}}  (prikazano u ispisu~\ref{policies}) gdje se mapira pojedine Eloquent modele s odgovarajućom politikom~\cite{authorization}.
+
+\begin{lstlisting}[caption={Registriranje politika}, label=policies]
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
+     */
+    protected $policies = [
+        Team::class => TeamPolicy::class,
+        Project::class => ProjectPolicy::class,
+        Post::class => PostPolicy::class,
+        Comment::class => CommentPolicy::class,
+        Resource::class => ResourcePolicy::class,
+    ];
+\end{lstlisting}
+
+Kao primjer politike u ispisu~\ref{postPolicy} prikazana je datoteka \texttt{PostPolicy.php} tj. politika koja definira autorizaciju akcija nad modelom \texttt{Post}. Tu je definirano da pojedinu objavu mogu vidjeti samo članovi tima kojem objava pripada, također da objavu može urediti i ažurirati samo onaj korisnik koji ju je i objavio, a ovlasti za izbrisati objavu imaju vlasnik tima, vlasnik/tvorac projekta kojem objava pripada te autor objave.
+
+\begin{lstlisting}[caption={Politika za autorizaciju akcija nad modelom \texttt{Post}}, label=postPolicy]
+<?php
+
+namespace App\Policies;
+
+use App\Models\Post;
+use App\Models\User;
+
+class PostPolicy
+{
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Post $post): bool
+    {
+        return $user->belongsToTeam($post->project->team);
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Post $post): bool
+    {
+        return $post->user->id == $user->id;
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Post $post): bool
+    {
+        return $user->ownsTeam($post->project->team) ||
+            $user->ownsProject($post->project) ||
+            $post->user->id == $user->id;
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Post $post): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, Post $post): bool
+    {
+        return false;
+    }
+}
+
+\end{lstlisting}
+
+Za provjeru korisnikovih ovlasti za izvršenje pojedine akcije nad modelom/resursom koristi se metoda \texttt{authorize}, a unutar Blade predložaka koriste se još i direktive \texttt{@can}, \texttt{@cannot}, \texttt{@canany}~\cite{authorization}.
 
 \subsection{Livewire komponente}
 
