@@ -21,7 +21,7 @@ composer require laravel/jetstream
 
 Jetstream pruža izbor između korištenja \textbf{Livewire} ili Inertia.js \textit{frontend scaffoldinga}. O tom izboru ovisi i odabrani jezik za predloške (engl. \textit{templating language}) jer uz Livewire to je \textbf{Blade}, a uz Inertia.js to je Vue.js~\cite{jetstreamIntro}. \\ Za instaliranje Jetstreama s Livewire \textit{frontend scaffoldingom} i to s uključenom podrškom za timove koristi se naredba \\ \texttt{php artisan jetstream:install livewire -{}-teams}~\cite{jetstreamInstallation}.
 
-\texttt{php artisan vendor:publish -{}-tag=jetstream-views} je naredba čijim se izvršavanjem u \texttt{app} direktoriju kreira direktorij \texttt{resources/view/components} koji sadrži razne generičke Blade komponente čija je svrha da ih se jednostavno može koristiti te pružanje konzistentnog korisničkog sučelja bez potrebe da developer kreira vlastite komponente~\cite{jetstreamLivewire}.
+\texttt{php artisan vendor:publish -{}-tag=jetstream-views} je naredba čijim se izvršavanjem u \texttt{app} direktoriju kreira direktorij \texttt{resources/view/components} koji sadrži razne generičke Blade komponente čija je svrha da ih se jednostavno može koristiti te pružanje konzistentnog korisničkog sučelja bez potrebe da \textit{developer} kreira vlastite komponente~\cite{jetstreamLivewire}.
 
 Nakon instalacije Jetstreama potrebno je instalirati i pokrenuti \textit{build} NPM ovisnosti pomoću naredbi \texttt{npm install} i \texttt{npm run build} te migrirati bazu naredbom \texttt{php artisan migrate}~\cite{jetstreamInstallation}.
 
@@ -113,7 +113,7 @@ Radi preglednosti su na dijagramu sa slike~\ref{fig:erDiagram} prikazane samo ta
 \item \texttt{failed\_jobs} - Automatski prisutna u Laravel aplikacijama, služi za pohranu poslova iz reda čekanja koji se nisu uspjeli izvršiti.
 \item \texttt{migrations} - Automatski prisutna u Laravel aplikacijama, služi za pohranu migracija.
 \item \texttt{password\_reset\_tokens} - Automatski prisutna u Laravel aplikacijama, služi za pohranu tokena za ponovno postavljanje lozinki u aplikaciji.
-\item \texttt{personal\_access\_tokens} - Kreira ju Laravel Sanctum pri instalaciji Laravel Jetstreama, a služi za pohranu API tokena u aplikaciji.
+\item \texttt{personal\_access\_tokens} - Kreira je Laravel Sanctum pri instalaciji Laravel Jetstreama, a služi za pohranu API tokena u aplikaciji.
 \item \texttt{sessions} - Kada se koristi \texttt{database} \textit{driver} za sesije, onda se u ovu tablicu one pohranjuju.
 \item \texttt{telescope\_entries}, \texttt{telescope\_entries\_tags}, \\ \texttt{telescope\_monitoring} - Nastaju pri instalaciji Laravel Telescopea, a služe za pohranu podataka za Telescope.
 \end{itemize}
@@ -969,18 +969,14 @@ Za provjeru korisnikovih ovlasti za izvršenje pojedine akcije nad modelom/resur
 \subsection{Livewire komponente}
 Livewire je \textit{full-stack} razvojni okvir za Laravel koji olakšava razvijanje dinamičkog korisničkog sučelja. Razvio ga je Caleb Porzio, otvorenog je k\^oda te je k\^od dostupan na platformi GitHub~\cite{livewireGithub}. Radi na način da se prvo inicijalno prikazuje Livewire komponenta na stranici, a zatim kada korisnik s njom interaktira Livewire šalje AJAX zahtjev prema serveru s ažuriranim podatcima. Server zatim iznova prikazuje tu komponentu i vraća novi HTML, a Livewire mutira DOM (engl. \textit{Document Object Model}) tako da se učinjene promjene očitaju na stranici~\cite{livewire}.
 
-Livewire komponenta kreira se pozivom Artisan naredbe \texttt{make:livewire} te će se tada kreirati sljedeće dvije datoteke - u direktoriju \texttt{app/Http/Livewire} kreirat će se klasa Livewire komponente, a u direktoriju \texttt{resources/views/livewire} \texttt{.blade.php} datoteka Livewire komponente. U ispisu~\ref{showPostClass} prikazana je klasa Livewire komponente \texttt{ShowPost}, a u ispisu~\ref{showPostBlade} pripadajuća Blade datoteka te Livewire komponente.
+Livewire komponenta kreira se pozivom Artisan naredbe \texttt{make:livewire} te će se tada kreirati sljedeće dvije datoteke - u direktoriju \texttt{app/Http/Livewire} kreirat će se klasa Livewire komponente, a u direktoriju \texttt{resources/views/livewire} \texttt{.blade.php} datoteka Livewire komponente. U ispisu~\ref{showPostClass} prikazana je klasa Livewire komponente \texttt{ShowPost}.
 
 \begin{lstlisting}[caption={\texttt{ShowPost.php} - klasa Livewire komponente}, label=showPostClass]
 <?php
 
 namespace App\Http\Livewire\Posts;
 
-use App\Models\Comment;
-use App\Models\Post;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Laravel\Jetstream\InteractsWithBanner;
-use Livewire\Component;
+// use ... -> required imports 
 
 class ShowPost extends Component
 {
@@ -988,15 +984,10 @@ class ShowPost extends Component
     use InteractsWithBanner;
 
     public Post $post;
-
     public $postId;
-
     public $title;
-
     public $content;
-
     public $openEditModal;
-
     public $openDeleteModal;
 
     protected $listeners = ['postUpdated' => '$refresh'];
@@ -1070,124 +1061,7 @@ class ShowPost extends Component
 
 \end{lstlisting}
 
-\begin{lstlisting}[caption={\texttt{show-post.blade.php} - Blade datoteka Livewire komponente}, label=showPostBlade, language=HTML, escapechar=|]
-<div class="w-full">
-    <article
-        class="pt-6 pb-8 lg:pt-12 lg:pb-12 mx-auto mb-6 w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue">
-        <header class="mb-4 lg:mb-6 not-format">
-            @canany(['update', 'delete'], $post)
-                <button id="dropdownPost{{ $post->id }}Button" data-dropdown-toggle="dropdownPost{{ $post->id }}"
-                    class="inline-flex items-center float-right p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50"
-                    type="button">
-                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
-                        </path>
-                    </svg>
-                    <span class="sr-only">{{ __('Post Settings') }}</span>
-                </button>
-                <!-- Dropdown menu -->
-                <div id="dropdownPost{{ $post->id }}"
-                    class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
-                    <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton">
-                        @can('update', $post)
-                            <li>
-                                <a href="#" wire:click.prevent="edit({{ $post->id }})"
-                                    class="block py-2 px-4 hover:bg-gray-100">{{ __('Edit') }}</a>
-                            </li>
-                        @endcan
-                        @can('delete', $post)
-                            <li>
-                                <a href="#" wire:click.prevent="delete({{ $post->id }})"
-                                    class="block py-2 px-4 hover:bg-gray-100">{{ __('Delete') }}</a>
-                            </li>
-                        @endcan
-                    </ul>
-                </div>
-            @endcanany
-            <address class="flex items-center mb-6 not-italic">
-                <div class="inline-flex items-center mr-3 text-sm text-gray-900">
-                    <img class="mr-4 w-16 h-16 rounded-full object-cover" src="{{ $post->user->profile_photo_url }}"
-                        alt="{{ $post->user->name }}">
-                    <div>
-                        <a href="#" rel="author"
-                            class="text-xl font-bold text-gray-900">{{ $post->user->name }}</a>
-                        <p class="text-base font-light text-gray-500">
-                            {{ $post->created_at->diffForHumans() }}
-                        </p>
-                        @if ($post->updated_at != $post->created_at)
-                            <p class="text-base font-light text-gray-400">{{ __('Edited') }}</p>
-                        @endif
-                    </div>
-                </div>
-            </address>
-            <h1 class="mb-4 text-2xl font-semibold text-gray-900 lg:mb-6 lg:text-4xl">
-                {{ $post->title }}
-            </h1>
-        </header>
-        <p class="lg:my-8 my-4 text-lg">
-            {{ $post->content }}
-        </p>
-        <section class="not-format">
-            @livewire('comments.show-comments', ['post' => $post], key($post->id))|\label{line:include}|
-        </section>
-    </article>
-
-    <x-dialog-modal wire:model="openEditModal">
-        <x-slot name="title">
-            {{ __('Post Information') }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div class="mt-4">
-                <x-label for="title" value="{{ __('Title') }}" />
-                <x-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title" />
-                <x-input-error for="title" class="mt-2" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="content" value="{{ __('Content') }}" />
-                <x-textarea id="content" rows="3" class="mt-1 block w-full" wire:model.defer="content" />
-                <x-input-error for="content" class="mt-2" />
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('openEditModal')" wire:loading.attr="disabled">
-                {{ __('Nevermind') }}
-            </x-secondary-button>
-
-            <x-button class="ml-2" wire:click="update" wire:loading.attr="disabled">
-                {{ __('Save') }}
-            </x-button>
-        </x-slot>
-    </x-dialog-modal>
-
-    <x-confirmation-modal wire:model="openDeleteModal">
-        <x-slot name="title">
-            {{ __('Delete Post') }}
-        </x-slot>
-
-        <x-slot name="content">
-            {{ __('Are you sure you want to delete post?') }}
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('openDeleteModal')" wire:loading.attr="disabled">
-                {{ __('Nevermind') }}
-            </x-secondary-button>
-
-            <x-danger-button class="ml-2" wire:click="destroy" wire:loading.attr="disabled">
-                {{ __('Delete Post') }}
-            </x-danger-button>
-        </x-slot>
-    </x-confirmation-modal>
-</div>
-
-\end{lstlisting}
-
-Livewire komponenta može biti uključena u Blade template koristeći direktivu \\ \texttt{@livewire} kao što je vidljivo u prethodnom ispisu u liniji~\ref{line:include} gdje je za svaku objavu učitavana i Livewire komponenta koja će prikazati vezane komentare.
+Livewire komponenta može biti uključena u Blade predložak koristeći direktivu \\ \texttt{@livewire}.
 
 Validacija atributa komponente u Livewireu obavlja se pozivom metode \\ \texttt{\$this->validate()} koja zatim provjerava pravila definirana unutar podatkovnog člana \texttt{\$rules} za pojedini atribut~\cite{livewireValidation}.
 
@@ -1196,7 +1070,7 @@ Kako bi se unutar Livewire komponente koristila paginacija potrebno je da kompon
 \subsubsection{Akcije}
 Akcije u Livewireu "osluškuju" interakcije na stranici te pozivaju odgovarajuću metodu na Livewire komponenti~\cite{livewireActions}.
 
-Tako, gledajući prethodna dva ispisa, metode \texttt{edit}, \texttt{update}, \texttt{delete}, \texttt{destroy} u klasi Livewire komponente izvršavaju se nakon interakcije korisnika nad određenim elementom (u primjeru botuni koji osluškuju određeni događaj putem direktive \texttt{wire} i to \texttt{click} događaj): \texttt{wire:click="edit"}, \texttt{wire:click="update"}, \\ \texttt{wire:click="delete"}, \texttt{wire:click="destroy"} u pripadajućem Blade predlošku.
+Tako, gledajući prethodni ispis, metode \texttt{edit}, \texttt{update}, \texttt{delete}, \texttt{destroy} u klasi Livewire komponente izvršavaju se nakon interakcije korisnika nad određenim elementom na stranici - primjerice korisnik interaktira s gumbom (engl. \textit{button}) koji "osluškuje" određeni događaj putem direktive \texttt{wire} kao npr. \texttt{wire:click="edit"}, \\ \texttt{wire:click="update"},  \texttt{wire:click="delete"}, \texttt{wire:click="destroy"} u pripadajućem Blade predlošku.
 
 Kako bi se akcije u Livewireu mogle autorizirati potrebno je da Livewire komponenta koristi osobinu (engl. \textit{trait}) \texttt{AuthorizesRequests} te je zatim moguće pozvati metodu \texttt{\$this->authorize()} unutar Livewire komponente~\cite{livewireAuthorization}. 
 
