@@ -1,5 +1,14 @@
 \section{Zaključak}
-U ovom tekstu dan je pregled izrade završnog rada. Na temelju iznesenog, studenti bi trebali izraditi korektno sastavljeni završni rad. 
-Naravno, najteži dio izrade je 
-sadržaj rada, koji studenti moraju sami osmisliti. 
-Ovaj tekst pomoći će im da izbjegnu zamke plagiranja i da uoče vrijednost samostalnog i autorskog rada.
+U ovom završnom radu predstavljen je način na koji je razvijen praktični dio završnog rada - Laravel aplikacija \textit{Teamstructor}. Navedene su tehnologije koje su korištene te je detaljno opisan način implementacije pojedinih dijelova aplikacije što je potkrijepljeno popratnim ispisima k\^oda i slikama.
+
+Ova aplikacija omogućava korisnicima da formiraju timove u kojima mogu surađivati na različitim timskim projektima na način da mogu pregledavati projektne resurse - učitane zajednički dijeljene datoteke te imaju prostor za raspravu - mogu objavljivati i komentirati obavijesti i ažuriranja relevantna za pojedini projekt. 
+
+U ovoj aplikaciji realizirani su svi inicijalno postavljeni ciljevi, a zahvaljujući izuzetnoj skalabilnosti odabranog razvojnog okvira po potrebi bi se brzo i lako mogle dodati nove proširene značajke. Imajući u vidu da se radi o aplikaciji koja služi kao platforma za timski rad, moguće proširenje bilo bi integracija s nekom popularnom platformom treće strane kao što je npr. Slack ili s obzirom da je jedna od zadaća aplikacije i pohrana projektnih resursa možda bi se moglo iste i verzionirati.  
+
+Zahvaljujući početnom kompletu Laravel Jetstream pri razvijanju aplikacije ušteđen je dio vremena jer pruža i \textit{scaffolding} za potreban autentikacijski sustav i \textit{frontend scaffolding} Livewire + Blade (uz korištenje Tailwind CSS-a) koji je lako prilagoditi potrebama aplikacije i ujedno korisniku ponuditi dinamičko sučelje moderna i atraktivna izgleda. 
+
+Pohrana datoteka tj. projektnih resursa implementirana je pomoću Spatie Laravel Media Library paketa te se datoteke pohranjuju na AWS S3 kompatibilan servis za pohranu MinIO.
+
+Aplikacija je lokalizirana tj. pruža korisničko sučelje i na početno zadanom engleskom jeziku, ali i na hrvatskom jeziku te je trenutni jezik aplikacije lako promijeniti koristeći se gumbom za promjenu jezika u navigacijskoj traci ili unosom URL-a s vrijednošću parametra \texttt{locale} (\texttt{en} ili \texttt{hr}) u web preglednik .
+
+Također, za pojedine dijelove aplikacije pisani su PHPUnit ili Pest \textit{feature} testovi te se kroz cijeli \textit{development} proces nastojalo što je više moguće pratiti preporučene prakse i držati do kvalitete k\^oda.
