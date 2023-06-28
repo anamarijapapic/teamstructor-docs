@@ -1142,6 +1142,39 @@ Pristupajući URL-u \url{http://localhost:9000} unutar web preglednika prikazat 
 \end{figure}
 
 \subsection{Spatie Laravel Media Library paket}
+Za implementaciju timskih resursa korišten je Laravel Media Library \\ (\texttt{spatie/laravel-medialibrary}) paket razvijen od strane Spatie tima - belgijske \textit{development} agencije koja razvija mnogo poznatih paketa otvorenog k\^oda za PHP i Laravel ekosustav.
+
+Media Library paket instalira se putem Composera naredbom \texttt{composer require "spatie/laravel-medialibrary:\textasciicircum 10.0.0"} te je potom potrebno objaviti migraciju za kreiranje tablice \texttt{media} pomoću Artisan naredbe \texttt{vendor:publish} te primijeniti tu migraciju na bazu podataka~\cite{mediaLibrary}.
+
+Za ostvariti željenu vezu između modela \texttt{Project} i \texttt{Resource} potrebno je da model \texttt{Project} implementira \textit{interface} \texttt{HasMedia} i osobinu (engl. \textit{trait}) \\ \texttt{InteractsWithMedia}, a model \texttt{Resource} nasljeđuje bazni model \texttt{Media} iz Media Library paketa. Također je potrebno u konfiguracijskoj datoteci \\ \texttt{config/media-library.php} navesti naziv klase \textit{custom} medijskog modela kao u ispisu~\ref{mediaModelConfig}.
+
+\begin{lstlisting}[caption={Specificiranje naziva klase \textit{media} modela u \texttt{config/media-library.php}}, label=mediaModelConfig]
+    /*
+     * The fully qualified class name of the media model.
+     */
+    'media_model' => App\Models\Resource::class,
+\end{lstlisting}
+
+U ispisu~\ref{uploadResource} vidljiv je dio k\^oda zaslužan za asociranje učitanog resursa s pripadajućim projektom te pohranjivanje učitanog resursa na \texttt{s3} disk. U prikazanoj metodi \texttt{save} iz klase Livewire komponente \texttt{UploadResource} prvo se validira \textit{input} tj. učitana datoteka, zatim se koristeći metodu \texttt{addMedia} učitani resurs asocira s pripadajućim projektom. Pozivom metode \texttt{toMediaCollection} resurs se pohranjuje na \texttt{s3} disk u zadanu medijsku kolekciju, a pozivom metode \texttt{withCustomProperties} na resurs se dodaje i  \textit{custom} svojstvo \texttt{'user\_id'} gdje spremamo identifikator korisnika koji je izvršio \textit{upload} te datoteke.
+
+\begin{lstlisting}[caption={Asociranje resursa s pripadajućim projektom i njegovo pohranjivanje koristeći Media Library metode}, label=uploadResource]
+    public function save()
+    {
+        $this->validate([
+            'resource' => 'required|file|max:12288', // (12MB max)
+        ]);
+
+        $this->project
+            ->addMedia($this->resource)
+            ->withCustomProperties(['user_id' => Auth::user()->id])
+            ->toMediaCollection('default', 's3');
+
+        $this->emit('resourceAdded');
+        $this->banner(__('Resource uploaded successfully.'));
+
+        $this->reset(['resource']);
+    }
+\end{lstlisting}
 
 \subsection{Lokalizacija}
 \label{subsection:localization}
