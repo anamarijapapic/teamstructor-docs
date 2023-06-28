@@ -1177,7 +1177,7 @@ U ispisu~\ref{uploadResource} vidljiv je dio k\^oda zaslužan za asociranje uči
 
 \subsection{Lokalizacija}
 \label{subsection:localization}
-Zadano Laravel aplikacija ne sadrži direktorij \texttt{lang} u kojem bi bile pohranjene potrebne jezične datoteke, ali ga se može stvoriti izvođenjem Artisan naredbe \texttt{lang:publish}~\cite{localization}. 
+Zadano Laravel aplikacija ne sadrži direktorij \texttt{lang} u kojem bi bile pohranjene potrebne jezične datoteke, ali ga se može stvoriti izvođenjem Artisan naredbe \\ \texttt{lang:publish}~\cite{localization}. 
 
 Lokalizacija \textit{Teamstructor} aplikacije izvedena je na način da su podržani engleski i hrvatski jezik što je jasno naznačeno u datoteci \texttt{config/locales.php} čiji je sadržaj prikazan u ispisu~\ref{configLocales}.
 
@@ -1212,7 +1212,7 @@ Kako bi se doista u Blade predlošku i prikazali odgovarajući prevedeni stringo
 
 Implementiran je \texttt{LanguageController} prikazan u ispisu~\ref{languageController}, dodana ruta za promjenu trenutnog jezika (prikazano u ispisu~\ref{routes} u liniji~\ref{line:locale.switch}), dodan \texttt{ConfigureLocale} \textit{middleware} prikazan u ispisu~\ref{configureLocaleMiddleware}.
 
-\begin{lstlisting}[caption={LanguageContoller.php}, label=languageController]
+\begin{lstlisting}[caption={\texttt{LanguageContoller.php}}, label=languageController]
 <?php
 
 namespace App\Http\Controllers;
@@ -1240,15 +1240,106 @@ Naposlijetku je implementiran i \textit{language switcher} tj. gumb za promjenu 
 \begin{figure}[H]
 	\includegraphics[width=0.7\linewidth,clip=]{assets/language-switcher.png}
 	\centering
-	\caption{\texttt{Gumb u navigacijskoj traci koji služi za promjenu trenutnog jezika aplikacije}}
+	\caption{Gumb u navigacijskoj traci koji služi za promjenu trenutnog jezika aplikacije}
 	\label{fig:localeSwitcher}
 \end{figure}
 
 \subsection{Testiranje i kvaliteta k\^oda}
 
 \subsubsection{Korišteni alati}
-\textbf{Laravel Debug Bar}, \textbf{Laravel Telescope}, \textbf{Laravel Pint}, pretpregled elektroničke pošte - \textbf{MailHog}
+Pri \textit{developmentu} radi bržeg otkrivanja i otklanjanja pogrešaka te praćenja performansi i ponašanja u aplikaciji korišteni su paketi \textbf{Laravel Debug Bar}~\cite{laravelDebugbarGitHub} i \textbf{Laravel Telescope}~\cite{telescope}.
+
+Također je korišten i \textit{code style fixer} \textbf{Laravel Pint}~\cite{pint}, izgrađen na PHP-CS-Fixeru, koji je automatski dostupan za korištenje uz Laravel instalaciju. Pomaže da k\^od ostane "čist" i konzistentan te se popravak \textit{code stylea} inicira izvođenjem naredbe \\ \texttt{.vendor/bin/pint} iz terminala. 
+
+Radi pretpregleda testne elektroničke pošte u aplikaciji (poslane i primljene) dodan je servis \textbf{MailHog}~\cite{mailhogGitHub} u datoteku \texttt{docker-compose.yml} (prikazano u ispisu~\ref{mailhog}) te se MailHog web sučelju može pristupiti unosom URL-a \url{http://localhost:8025} u web preglednik.
+
+\begin{lstlisting}[caption={\texttt{mailhog} servis unutar \texttt{docker-compose.yml} datoteke}, label=mailhog]
+  mailhog:
+    platform: linux/x86_64
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+\end{lstlisting}
 
 \subsubsection{Pisanje i pokretanje testova}
+U aplikacijskom \texttt{test} direktoriju zadano se nalaze dva poddirektorija - \texttt{Feature} i \texttt{Unit}. \textit{Unit} testovi testiraju mali izolirani dio k\^oda, a \textit{feature} testovi testiraju veće dijelove k\^oda tj. pojedine funkcionalnosti u cijelosti~\cite{testing}.
+
+Kako se testiranje ne bi provodilo nad glavnom "radnom" bazom podataka i tako se vršile promjene nad stvarnim zapisima u bazi, za potrebe testiranja definirano je posebno izolirano \texttt{sqlite\_testing} okruženje baze podataka u memoriji (prikazano u ispisu~\ref{sqliteTesting}).
+
+\begin{lstlisting}[caption={Testno okruženje baze podataka definirano u \texttt{config/database.php}}, label=sqliteTesting]
+        'sqlite_testing' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+        ],
+\end{lstlisting}
+
+Laravel automatski dolazi s podrškom za testiranje s \textbf{PHPUnitom} te se novi \textit{feature} test može kreirati pozivom Artisan naredbe \texttt{make:test}, a testovi se mogu pokrenuti koristeći \texttt{phpunit} naredbu \texttt{./vendor/bin/phpunit} ili Artisan naredbu \texttt{test}~\cite{testing}.
+
+U ispisu~\ref{phpunitTest} prikazan je primjer \textit{feature} testa pisanog u PHPUnitu.
+
+\begin{lstlisting}[caption={\texttt{CreateCommentFormTest} - \texttt{test\_the\_component\_can\_render}}, label=phpunitTest]
+<?php
+
+namespace Tests\Feature;
+
+// use ... -> imports
+
+class CreateCommentFormTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_the_component_can_render(): void
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+        $project = Project::factory()->create([
+            'team_id' => $user->currentTeam,
+            'user_id' => $user,
+        ]);
+
+        $post = Post::factory()->create([
+            'project_id' => $project,
+            'user_id' => $user,
+        ]);
+
+        $component = Livewire::test(CreateCommentForm::class, ['post' => $post]);
+
+        $component->assertStatus(200);
+    }
+}
+
+\end{lstlisting}
+
+\textbf{Pest} PHP razvojno okruženje za testiranje potrebno je instalirati putem Composera: \texttt{composer require pestphp/pest -{}-dev -{}-with-all-dependencies}, \\ a zatim inicijalizirati Pest u trenutnom projektu koristeći naredbu \\ \texttt{./vendor/bin/pest -{}-init}~\cite{pestInstallation}.
+
+Moguće je instalirati Pest dodatke (engl. \textit{plugins}) za Laravel i Livewire putem Composera: \texttt{composer require pestphp/pest-plugin-laravel -{}-dev} i \\ \texttt{composer require pestphp/pest-plugin-livewire -{}-dev}~\cite{pestPlugins}.
+
+Testovi se nakon instalacije Pesta mogu pokretati naredbom \texttt{./vendor/bin/pest}, a Pest test može se kreirati pozivom Artisan naredbe \texttt{pest:test}~\cite{pestInstallation}.
+
+U ispisu~\ref{pestTest} prikazan je primjer \textit{feature} testa pisanog u Pestu.
+
+\begin{lstlisting}[caption={\texttt{UploadResourceTest} - \texttt{test 'the component can render'}}, label=pestTest]
+<?php
+
+// use ... -> imports
+
+uses()->group('feature', 'resources');
+
+uses(RefreshDatabase::class);
+
+test('the component can render', function () {
+    actingAs($user = User::factory()->withPersonalTeam()->create());
+
+    $project = Project::factory()->create([
+        'team_id' => $user->currentTeam,
+        'user_id' => $user,
+    ]);
+
+    livewire(UploadResource::class, ['project' => $project])
+        ->assertStatus(200);
+});
+
+\end{lstlisting}
 
 \subsection{Otvoreni k\^od i doprinos zajednice na projektima Laravel ekosustava}
