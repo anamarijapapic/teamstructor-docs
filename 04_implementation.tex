@@ -656,7 +656,7 @@ Sve rute u Laravel aplikaciji definirane su unutar datoteka koje se nalaze unuta
 
 Ispis~\ref{routes} prikazuje sadržaj datoteke \texttt{routes/web.php} gdje je vidljiv način na koji su rute definirane. Podijeljene su prvenstveno u dvije grupe - prva dostupna svim prijavljenim korisnicima (grupa koristi \textit{middleware} koji zahtijeva autentikaciju), te druga dostupna samo admin korisnicima (korišten \textit{custom} \textit{middleware} \texttt{can:admin-privileges}), a zadnja defnirana ruta je ona koju koristi kontoler pri promjeni jezika aplikacije o čemu će biti riječi u poglavlju~\ref{subsection:localization}. Svakoj ruti dodijeljeno je jedinstveno ime koristeći metodu \texttt{name}.
 
-\begin{lstlisting}[caption={Sadržaj datoteke \texttt{routes/web.php}}, label=routes]
+\begin{lstlisting}[caption={Sadržaj datoteke \texttt{routes/web.php}}, label=routes, escapechar=|]
 <?php
 
 use App\Http\Controllers\LanguageController;
@@ -716,7 +716,7 @@ Route::group([
         ->name('admin.dashboard.projects');
 });
 
-Route::get('locale/{locale}', [LanguageController::class, 'switchLocale'])
+Route::get('locale/{locale}', [LanguageController::class, 'switchLocale']) |\label{line:locale.switch}|
     ->name('locale.switch');
 
 \end{lstlisting}
@@ -798,7 +798,6 @@ Pojedini \textit{middleware} treba se registrirati u aplikaciji - ako se želi d
 \end{lstlisting}
 
 Različite \textit{middleware} klase može se međusobno grupirati pod istim ključem (engl. \textit{key}) u prethodno navedenoj \texttt{Kernel} klasi  koristeći podatkovni član \texttt{\$middlewareGroups}~\cite{middleware} (pogledati ispis~\ref{middlewareGroups}).
-
 
 \begin{lstlisting}[caption={Definiranje \textit{middleware} grupa}, label=middlewareGroups]
     /**
@@ -1178,6 +1177,72 @@ U ispisu~\ref{uploadResource} vidljiv je dio k\^oda zaslužan za asociranje uči
 
 \subsection{Lokalizacija}
 \label{subsection:localization}
+Zadano Laravel aplikacija ne sadrži direktorij \texttt{lang} u kojem bi bile pohranjene potrebne jezične datoteke, ali ga se može stvoriti izvođenjem Artisan naredbe \texttt{lang:publish}~\cite{localization}. 
+
+Lokalizacija \textit{Teamstructor} aplikacije izvedena je na način da su podržani engleski i hrvatski jezik što je jasno naznačeno u datoteci \texttt{config/locales.php} čiji je sadržaj prikazan u ispisu~\ref{configLocales}.
+
+\begin{lstlisting}[caption={Sadržaj datoteke \texttt{config/locales.php}}, label=configLocales]
+<?php
+
+return [
+    /*
+    |------------------------------------------------------------------
+    | Locales
+    |------------------------------------------------------------------
+    |
+    | List of application locales (locale_code => language_name).
+    |
+    */
+
+    'en' => 'English',
+    'hr' => 'Hrvatski',
+];
+
+\end{lstlisting}
+
+Jezične JSON datoteke s prevedenim \textit{stringovima}  nalaze se u aplikacijskom direktoriju \texttt{resources/lang}:
+\\
+\dirtree{%
+.1 resources/lang.
+.2 en.json.
+.2 hr.json.
+}
+
+Kako bi se doista u Blade predlošku i prikazali odgovarajući prevedeni stringovi koristi se \textit{echo} sintaksa \texttt{\{\{ \}\}} i \textit{helper} funkcija \_\_ npr. \texttt{\{\{ \_\_('Welcome to your Teamstructor application!') \}\}}~\cite{localization}.
+
+Implementiran je \texttt{LanguageController} prikazan u ispisu~\ref{languageController}, dodana ruta za promjenu trenutnog jezika (prikazano u ispisu~\ref{routes} u liniji~\ref{line:locale.switch}), dodan \texttt{ConfigureLocale} \textit{middleware} prikazan u ispisu~\ref{configureLocaleMiddleware}.
+
+\begin{lstlisting}[caption={LanguageContoller.php}, label=languageController]
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+
+class LanguageController extends Controller
+{
+    public function switchLocale($locale)
+    {
+        if (array_key_exists($locale, config('locales'))) {
+            Session::put('locale', $locale);
+        }
+
+        return Redirect::back();
+    }
+}
+
+\end{lstlisting}
+
+U konfiguracijsku datoteku za NGINX server \texttt{default.conf} dodana je linija \\ \texttt{rewrite \textasciicircum /(en|hr)/?(.*)?  https://teamstructor.test/\$2?locale=\$1 \\ permanent;}, te u \texttt{.htaccess} datoteku linija \\ \texttt{RedirectMatch "\textasciicircum /(en|hr)/?(.*)?" "/\$2?locale=\$1"} što omogućava da se u web pregledniku URL unesen u formi \url{https://teamstructor.test/hr} tumači kao \url{https://teamstructor.test/?locale=hr}.
+
+Naposlijetku je implementiran i \textit{language switcher} tj. gumb za promjenu jezika prikazan na slici~\ref{fig:localeSwitcher}.
+\begin{figure}[H]
+	\includegraphics[width=0.7\linewidth,clip=]{assets/language-switcher.png}
+	\centering
+	\caption{\texttt{Gumb u navigacijskoj traci koji služi za promjenu trenutnog jezika aplikacije}}
+	\label{fig:localeSwitcher}
+\end{figure}
 
 \subsection{Testiranje i kvaliteta k\^oda}
 
