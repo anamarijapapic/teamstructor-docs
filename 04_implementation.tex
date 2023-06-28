@@ -1082,8 +1082,64 @@ Događaji se mogu pokrenuti na više načina: iz Blade predloška, iz komponente
 Unutar klase Livewire komponente i to u podatkovnom članu \texttt{\$listeners} potrebno je registrirati koje će događaje komponenta "slušati" te koju metodu će komponenta pozvati kad se određeni događaj emitira~\cite{livewireEvents}. 
 
 \subsection{Pohrana datoteka}
+Laravel integrira Flysystem~\cite{flysystemGitHub} PHP paket Franka de Jongea te tako pruža apstrakciju datotečnog sustava - nudi \textit{drivere} za rad s lokalnim datotečnim sustavom, SFTP-om (engl. \textit{Secure File Transfer Protocol}) te Amazon S3 pohranom objekata u oblaku~\cite{fileStorage}.
+
+Konfiguracijska datoteka datotečnog sustava u Laravelu jest \texttt{filesystems.php} unutar direktorija \texttt{config} te se u njoj konfiguriraju tzv. diskovi Laravel datotečnog sustava od kojih svaki predstavlja jedinstveni \textit{driver} te lokaciju za pohranu. \textit{Driver} \texttt{local} upravlja datotekama pohranjenima na lokalnom serveru na kojemu se pokreće Laravel aplikacija, a \textit{driver} \texttt{s3} koristi se za pohranu datoteka na Amazon S3 pohranu objekata u oblaku~\cite{fileStorage}. 
 
 \subsubsection{MinIO - AWS S3 kompatibilan servis za pohranu}
+U aplikaciji \textit{Teamstructor} za pohranu timskih resursa korišten je AWS (Amazon Web Services) S3 kompatibilan servis za pohranu naziva \textbf{MinIO}~\cite{minio}. On koristi \texttt{s3} disk u konfiguracijskoj datoteci.
+
+Prije korištenja \texttt{s3} \textit{drivera} potrebno je instalirati Flysystem S3 paket putem Composera pozivom naredbe: \texttt{composer require league/flysystem-aws-s3-v3 "\textasciicircum 3.0" -{}-with-all-dependencies}~\cite{fileStorage}. Također je potrebno dodati MinIO servis u \texttt{docker-compose.yml} datoteku kao što je prikazano u ispisu~\ref{minioDocker} te definirati potrebne \textit{environment} varijable unutar \texttt{.env} datoteke kao u ispisu~\ref{minioEnv}.
+
+\begin{lstlisting}[caption={\texttt{minio} servis unutar \texttt{docker-compose.yml} datoteke}, label=minioDocker]
+version: "3.9"
+services:
+  # ...
+  
+  minio:
+    image: minio/minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+        MINIO_ROOT_USER: minioadmin
+        MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+        - minio-data:/data
+    command: server /data --console-address :9001
+
+  # ...
+  
+volumes:
+  # ...
+  minio-data:
+
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Definiranje potrebnih AWS/MinIO \textit{environment} varijabli}, label=minioEnv]
+AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+AWS_DEFAULT_REGION=eu-south-1
+AWS_BUCKET=teamstructor-bucket
+AWS_URL=http://teamstructor.test:9000/teamstructor-bucket
+AWS_ENDPOINT=http://minio:9000
+AWS_USE_PATH_STYLE_ENDPOINT=true
+\end{lstlisting}
+
+Pristupajući URL-u \url{http://localhost:9000} unutar web preglednika prikazat će se MinIO Object Store zaslon za prijavu kao na slici~\ref{fig:minioLogin}, a uspješnom prijavom koristeći korisničko ime i lozinku definirane za \texttt{minio} Docker spremnik prikazat će se Object Browser zaslon prikazan na slici~\ref{fig:minioObjectBrowser} na kojemu je moguće pregledati i pristupiti pojedinim \textit{bucketima}~\cite{minioContainer}.
+\begin{figure}[H]
+	\includegraphics[width=1\linewidth,clip=]{assets/minio-login.png}
+	\centering
+	\caption{MinIO Console - MinIO Object Store \textit{login} zaslon}
+	\label{fig:minioLogin}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=1\linewidth,clip=]{assets/minio-object-browser.png}
+	\centering
+	\caption{MinIO Console - MinIO Object Browser zaslon i stvoreni \textit{bucket}}
+	\label{fig:minioObjectBrowser}
+\end{figure}
 
 \subsection{Spatie Laravel Media Library paket}
 
