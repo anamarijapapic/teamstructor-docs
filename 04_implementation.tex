@@ -1343,3 +1343,16 @@ test('the component can render', function () {
 \end{lstlisting}
 
 \subsection{Otvoreni k\^od i doprinos zajednice na projektima Laravel ekosustava}
+Razvojni okvir Laravel, nazivan još i razvojnim okvirom zajednice (engl. \textit{community framework}), aktivno potiče \textit{developere} na kolaboraciju na svim repozitorijima svojih projekata i paketa prve strane i to ne samo u vidu prijava \textit{bugova} putem GitHuba kao \textit{issues}, već i \textit{pull} zahtjeve (engl. \textit{requests})~\cite{contributions}.
+
+Ispravci \textit{bugova} trebali bi se slati na granu najrecentnije verzije koja podržava ispravke \textit{bugova}, a nikada u granu \texttt{master} (osim ako popravljaju značajke prisutne samo u nadolazećem izdanju)~\cite{contributions}.
+
+\textit{Minor} značajke koje su u potpunosti kompatibline s prethodnim verzijama trenutnog izdanja mogu se poslati na najrecentniju stablinu granu, a \textit{major} nove značajke ili značajke s ključnim \textit{breaking} izmjenama uvijek se trebaju slati u \texttt{master} granu koja sadrži nadolazeće izdanje~\cite{contributions}.
+
+Prilikom izrade ovog završnog rada i razvijanja aplikacije koristeći se početnim kompletom Laravel Jetstream uočila sam stilsku nekonzistentnost u korisničkom sučelju pri prikazivanju profilne fotografije korisnika u navedenom Laravel \textit{first-party} paketu te sam zatim dala svoj doprinos. Bilo je potrebno \textit{forkati} izvorni repozitorij, učiniti potrebne izmjene u k\^odu na posebnoj grani te otvoriti \texttt{pull request} (dostupan na poveznici \url{https://github.com/laravel/jetstream/pull/1304}). Izmjene koje sam učinila su prihvaćene od strane Laravel tima te objavljene u sklopu Laravel Jetstream izdanja v3.1.3 koji je dostupan na poveznici \url{https://github.com/laravel/jetstream/releases/tag/v3.1.3} te je  na slici~\ref{fig:jetstreamCommits} prikazana povijest \textit{commita} za to izdanje.
+\begin{figure}[H]
+	\includegraphics[width=1\linewidth,clip=]{assets/jetstream-commits-v3.1.3.png}
+	\centering
+	\caption{Povijest \textit{commita} - \texttt{laravel/jetstream v.3.1.3}}
+	\label{fig:jetstreamCommits}
+\end{figure}
