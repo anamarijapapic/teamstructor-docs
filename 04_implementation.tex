@@ -656,7 +656,7 @@ Sve rute u Laravel aplikaciji definirane su unutar datoteka koje se nalaze unuta
 
 Ispis~\ref{routes} prikazuje sadržaj datoteke \texttt{routes/web.php} gdje je vidljiv način na koji su rute definirane. Podijeljene su prvenstveno u dvije grupe - prva dostupna svim prijavljenim korisnicima (grupa koristi \textit{middleware} koji zahtijeva autentikaciju), te druga dostupna samo admin korisnicima (korišten \textit{custom} \textit{middleware} \texttt{can:admin-privileges}), a zadnja defnirana ruta je ona koju koristi kontoler pri promjeni jezika aplikacije o čemu će biti riječi u poglavlju~\ref{subsection:localization}. Svakoj ruti dodijeljeno je jedinstveno ime koristeći metodu \texttt{name}.
 
-\begin{lstlisting}[caption={Sadržaj datoteke \texttt{routes/web.php}}, label=routes, escapechar=|]
+\begin{lstlisting}[caption={Sadržaj datoteke \texttt{routes/web.php}}, label=routes, escapechar=&]
 <?php
 
 use App\Http\Controllers\LanguageController;
@@ -716,7 +716,7 @@ Route::group([
         ->name('admin.dashboard.projects');
 });
 
-Route::get('locale/{locale}', [LanguageController::class, 'switchLocale']) |\label{line:locale.switch}|
+Route::get('locale/{locale}', [LanguageController::class, 'switchLocale']) &\label{line:locale.switch}&
     ->name('locale.switch');
 
 \end{lstlisting}
