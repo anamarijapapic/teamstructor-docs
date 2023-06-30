@@ -19,7 +19,9 @@ cd teamstructor-app
 composer require laravel/jetstream
 \end{lstlisting}
 
-Jetstream pruža izbor između korištenja \textbf{Livewire} ili Inertia.js \textit{frontend scaffoldinga}. O tom izboru ovisi i odabrani jezik za predloške (engl. \textit{templating language}) jer uz Livewire to je \textbf{Blade}, a uz Inertia.js to je Vue.js~\cite{jetstreamIntro}. \\ Za instaliranje Jetstreama s Livewire \textit{frontend scaffoldingom} i to s uključenom podrškom za timove koristi se naredba \\ \texttt{php artisan jetstream:install livewire -{}-teams}~\cite{jetstreamInstallation}.
+Jetstream pruža izbor između korištenja \textbf{Livewire} ili Inertia.js \textit{frontend scaffoldinga}. O tom izboru ovisi i odabrani jezik za predloške (engl. \textit{templating language}) jer uz Livewire to je \textbf{Blade}, a uz Inertia.js to je Vue.js~\cite{jetstreamIntro}.
+
+Za instaliranje Jetstreama s Livewire \textit{frontend scaffoldingom} i to s uključenom podrškom za timove koristi se naredba \texttt{php artisan jetstream:install livewire -{}-teams}~\cite{jetstreamInstallation}.
 
 \texttt{php artisan vendor:publish -{}-tag=jetstream-views} je naredba čijim se izvršavanjem u \texttt{app} direktoriju kreira direktorij \texttt{resources/view/components} koji sadrži razne generičke Blade komponente čija je svrha da ih se jednostavno može koristiti te pružanje konzistentnog korisničkog sučelja bez potrebe da \textit{developer} kreira vlastite komponente~\cite{jetstreamLivewire}.
 
@@ -118,7 +120,7 @@ Radi preglednosti su na dijagramu sa slike~\ref{fig:erDiagram} prikazane samo ta
 \item \texttt{telescope\_entries}, \texttt{telescope\_entries\_tags}, \\ \texttt{telescope\_monitoring} - Nastaju pri instalaciji Laravel Telescopea, a služe za pohranu podataka za Telescope.
 \end{itemize}
 
-U poglavlju~\ref{subsection:dbInteraction} će biti više rečeno o načinima na koje se ostvaruje interakcija s bazom podataka te o samim modelima i relacijama.
+U poglavlju~\ref{subsection:dbInteraction} bit će više rečeno o načinima na koje se ostvaruje interakcija s bazom podataka te o samim modelima i relacijama.
 
 \subsection{Interakcija s bazom podataka}
 \label{subsection:dbInteraction}
@@ -203,8 +205,8 @@ return new class extends Migration
 
 Za izvršiti sve migracije koje se još nisu primijenile na bazu podataka pokreće se Artisan naredba \texttt{migrate}, a za povratak na prethodnu migraciju tj. poništavanje promjena posljednjih \textit{n} migracija Artisan naredba \texttt{migrate:rollback}~\cite{migrations}.
 
-\subsubsection{Populacija podatcima}
-Populacija baze podataka (engl. \textit{seeding}) u Laravelu se može obaviti koristeći \textit{seed} klase koje se nalaze u direktoriju \texttt{database/seeders}. Ondje se zadano nalazi \\ \texttt{DatabaseSeeder} klasa koja sadrži metodu \texttt{run} koja se izvršava pozivom \texttt{db:seed} Artisan naredbe. Unutar metode \texttt{run} koristeći se metodom \texttt{call} pozivaju se dodatni ostali u aplikaciji definirani \textit{seederi}. Dobra je praksa \textit{seeding} k\^od podijeliti u više dijelova tj. \textit{seed} klasa jer se tako ne "zatrpava" isključivo jedan \textit{seeder} k\^odom. U ispisu~\ref{databaseSeeder} može se vidjeti \textit{seedere} pozvane koristeći metodu \texttt{call}~\cite{seeding}.
+\subsubsection{Punjenje podatcima}
+Punjenje baze podataka podatcima (engl. \textit{seeding}) u Laravelu se može obaviti koristeći \textit{seed} klase koje se nalaze u direktoriju \texttt{database/seeders}. Ondje se zadano nalazi \linebreak \texttt{DatabaseSeeder} klasa koja sadrži metodu \texttt{run} koja se izvršava pozivom \texttt{db:seed} Artisan naredbe. Unutar metode \texttt{run} koristeći se metodom \texttt{call} pozivaju se dodatni ostali u aplikaciji definirani \textit{seederi}. Dobra je praksa \textit{seeding} k\^od podijeliti u više dijelova tj. \textit{seed} klasa jer se tako ne "zatrpava" isključivo jedan \textit{seeder} k\^odom. U ispisu~\ref{databaseSeeder} može se vidjeti \textit{seedere} pozvane koristeći metodu \texttt{call}~\cite{seeding}.
 
 \begin{lstlisting}[caption={Sadržaj \texttt{DatabaseSeeder} klase}, label=databaseSeeder]
 <?php
@@ -260,23 +262,16 @@ Naziv klase modela&Naziv odgovarajuće tablice\\
 \hline
 \end{longtable}
 
-U klasi modela definiraju se njegovi atributi (\textit{fillable} - one koji su \textit{mass assignable} tj. dozvoljeno je da ih dodijele korisnici aplikacije te \textit{hidden} - one koji su skriveni pri serijalizaciji), relacije (o kojima će biti više riječi u poglavlju~\ref{paragraph:relations}), \textit{traits} tj. osobine koje koristi, događaje koje emitira itd.
+U klasi modela definiraju se njegovi atributi (\textit{fillable} - oni koji su \textit{mass assignable} tj. dozvoljeno je da ih dodijele korisnici aplikacije te \textit{hidden} - oni koji su skriveni pri serijalizaciji), relacije (o kojima će biti više riječi u poglavlju~\ref{paragraph:relations}), \textit{traits} tj. osobine koje koristi, događaje koje emitira itd.
 
-U ispisu~\ref{modelUser} prikazan je dio k\^oda iz klase modela \texttt{User} gdje je vidljivo da koristi nekolicinu osobina (engl. \textit{traits}) te definiranje atributa modela.
+U ispisu~\ref{modelUser} prikazan je dio k\^oda iz klase modela \texttt{User} gdje je vidljivo kako koristi nekolicinu osobina (engl. \textit{traits}) te definiranje atributa modela.
 
 \begin{lstlisting}[caption={Dio k\^oda model klase \texttt{User}}, label=modelUser]
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Jetstream\HasTeams;
-use Laravel\Sanctum\HasApiTokens;
+// use ... -> required imports
 
 class User extends Authenticatable
 {
@@ -330,20 +325,16 @@ class User extends Authenticatable
 // ...
 \end{lstlisting}
 
-U ispisu~\ref{modelUser} može se primjetiti da model \texttt{User} koristi osobinu \texttt{HasFactory}. Pomoću tvornica modela (engl. \textit{model factories}) može se definirati skup zadanih atributa za određeni Eloquent model pa je olakšano populiranje baze podataka sa testnim zapisima. Tvornica modela može se generirati Artisan naredbom \texttt{make:factory} te će se nalaziti u \texttt{database/factories} direktoriju~\cite{factories}.
+U ispisu~\ref{modelUser} može se primjetiti kako model \texttt{User} koristi osobinu \texttt{HasFactory}. Pomoću tvornica modela (engl. \textit{model factories}) može se definirati skup zadanih atributa za određeni Eloquent model pa je olakšano punjenje baze podataka sa testnim zapisima. Tvornica modela može se generirati Artisan naredbom \texttt{make:factory} te će se nalaziti u \texttt{database/factories} direktoriju~\cite{factories}.
 
-U ispisu~\ref{factoryUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje je vidljiva metoda \texttt{definition} koja vraća skup atributa koji bi se trebali primijeniti na model pri njegovom kreiranju. Za generiranje testnih lažnih podataka koristi se Faker~\cite{fakerGitHub} PHP biblioteka čija je instanca u \texttt{\$this->faker}~\cite{factories}.
+U ispisu~\ref{factoryUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje je vidljiva metoda \texttt{definition} koja vraća skup atributa koji bi se trebali primijeniti na model pri njegovom kreiranju. Za generiranje testnih lažnih podataka koristi se Faker~\cite{fakerGitHub} PHP biblioteka čija je instanca u \texttt{\$this->faker}~\cite{factories}.\\
 
 \begin{lstlisting}[caption={Dio k\^oda tvornice modela \texttt{UserFactory}}, label=factoryUser]
 <?php
 
 namespace Database\Factories;
 
-use App\Models\Team;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Laravel\Jetstream\Features;
+// use ... -> required imports
 
 class UserFactory extends Factory
 {
@@ -378,7 +369,7 @@ class UserFactory extends Factory
 // ...
 \end{lstlisting}
 
-Također, tvornicama modela mogu se definirati stanja (engl. \textit{factory states}) koja predstavljaju način da se primijene diskretne izmjene tj. modificiraju atributi na nekoj tvornici modela. U ispisu~\ref{factoryStatesUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje se definira stanje tvornice modela za stvaranje administrator korisnika. Vidljivo je da to stanje vrši izmjene samo na odabranim atributima, a ostali će atributi biti postavljeni kao u izvornoj definiciji tvornice modela~\cite{factories}.
+Također, tvornicama modela mogu se definirati stanja (engl. \textit{factory states}) koja omogućavaju primjenu diskretnih izmjena tj. modifikaciju odabranih atributa na nekoj tvornici modela. U ispisu~\ref{factoryStatesUser} prikazan je dio k\^oda iz tvornice modela \texttt{UserFactory} gdje se definira stanje tvornice modela za stvaranje administrator korisnika. Vidljivo je kako to stanje obavlja izmjene samo na odabranim atributima, a ostali će atributi biti postavljeni kao u izvornoj definiciji tvornice modela~\cite{factories}.
 
 \begin{lstlisting}[caption={Dio k\^oda tvornice modela \texttt{UserFactory} koji prikazuje definiciju stanja tvornice modela}, label=factoryStatesUser]
     /**
@@ -455,22 +446,18 @@ Model \texttt{User} definira veze prema modelima \texttt{Project}, \texttt{Post}
     }
 \end{lstlisting}
 
-Model \texttt{Team} definira veze prema modelu \texttt{Project}, kao što je vidljivo u ispisu~\ref{relationsTeam}, a nasljeđujući model \texttt{JetstreamTeam} definirane su veze prema modelima \texttt{User}, \\ \texttt{Membership} i \texttt{TeamInvitation} te su te metode prikazane u ispisu~\ref{relationsJetstreamTeam}.
+Model \texttt{Team} definira veze prema modelu \texttt{Project}, kao što je vidljivo u ispisu~\ref{relationsTeam}, a nasljeđujući model \texttt{JetstreamTeam} definirane su veze prema modelima \texttt{User}, \linebreak \texttt{Membership} i \texttt{TeamInvitation} te su te metode prikazane u ispisu~\ref{relationsJetstreamTeam}.
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Team}}, label=relationsTeam]
 <?php
 
 namespace App\Models;
 
-// ...
-use Illuminate\Database\Eloquent\Relations\HasMany;
-// ...
+// use ... -> required imports
 use Laravel\Jetstream\Team as JetstreamTeam;
 
 class Team extends JetstreamTeam
 {
-
-// ...
 
     /**
      * Get the projects for the team.
@@ -519,6 +506,7 @@ class Team extends JetstreamTeam
         return $this->hasMany(Jetstream::teamInvitationModel());
     }
 \end{lstlisting}
+\pagebreak
 
 Model \texttt{Membership} je pivotni model (između modela \texttt{Team} i \texttt{User}), a model \\ \texttt{TeamInvitation} definira vezu prema modelu \texttt{Team} kao što je prikazano u ispisu~\ref{relationsTeamInvitation}:
 
@@ -532,26 +520,20 @@ Model \texttt{Membership} je pivotni model (između modela \texttt{Team} i \text
     }
 \end{lstlisting}
 
-Model \texttt{Project} definira veze prema modelima \texttt{Team}, \texttt{User} i \texttt{Post} vidljivo u ispisu~\ref{relationsProject}, te implementirajući \textit{interface} \texttt{HasMedia} i koristeći osobinu \\ \texttt{InteractsWithMedia} definira i vezu prema modelu \texttt{Resource} vidljivo u ispisu~\ref{relationsProjectTrait}.
+Model \texttt{Project} definira veze prema modelima \texttt{Team}, \texttt{User} i \texttt{Post} vidljivo u ispisu~\ref{relationsProject}, te implementirajući \textit{interface} \texttt{HasMedia} i koristeći osobinu \linebreak \texttt{InteractsWithMedia} definira i vezu prema modelu \texttt{Resource} vidljivo u ispisu~\ref{relationsProjectTrait}.
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Project}}, label=relationsProject]
 <?php
 
 namespace App\Models;
 
-// ...
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+// use ... -> required imports
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Project extends Model implements HasMedia
 {
-    // ...
     use InteractsWithMedia;
-    
-    // ...
     
     /**
      * Get the team that owns the project.
@@ -589,7 +571,7 @@ public function media(): MorphMany
 }
 \end{lstlisting}
 
-Model \texttt{Post} definira veze prema modelima \texttt{Project}, \texttt{User} i \texttt{Comment} kao što je prikazano u ispisu~\ref{relationsPost}, a model \texttt{Comment} definira veze prema modelima \texttt{Post} i \texttt{User}, prikazano u ispisu~\ref{relationsComment}.
+Model \texttt{Post} definira veze prema modelima \texttt{Project}, \texttt{User} i \texttt{Comment} kao što je prikazano u ispisu~\ref{relationsPost}.
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Post}}, label=relationsPost]
     /**
@@ -616,6 +598,8 @@ Model \texttt{Post} definira veze prema modelima \texttt{Project}, \texttt{User}
         return $this->hasMany(Comment::class)->latest();
     }
 \end{lstlisting}
+
+Model \texttt{Comment} definira veze prema modelima \texttt{Post} i \texttt{User} kao što je prikazano u ispisu~\ref{relationsComment}.
 
 \begin{lstlisting}[caption={Relacije modela \texttt{Comment}}, label=relationsComment]
     /**
@@ -644,29 +628,22 @@ public function model(): MorphTo
 }
 \end{lstlisting}
 
-U ovim prethodno navedenim odnosima među modelima može se primijetiti da su korištene Eloquent relacije \texttt{HasMany} i inverzna joj \texttt{BelongsTo} - koje označavaju vezu jedan prema više (1:N) odnosno više prema jedan (N:1). Za ostvarivanje veze više prema više (N:M) korištena je Eloquent relacija \texttt{BelongsToMany}. Također su korištene i polimorfne Eloquent relacije \texttt{MorphMany} i inverzna joj \texttt{MorphTo} - koje označavaju polimofnu vezu (neovisnu o tipu modela) jedan prema više (1:N) odnosno više prema jedan (N:1)~\cite{relationships}.
+U ovim prethodno navedenim odnosima među modelima može se primijetiti da su korištene Eloquent relacije \texttt{HasMany} i inverzna joj \texttt{BelongsTo} - koje predstavljaju vezu jedan prema više (1:N) odnosno više prema jedan (N:1). Za ostvarivanje veze više prema više (N:M) korištena je Eloquent relacija \texttt{BelongsToMany}. Također su korištene i polimorfne Eloquent relacije \texttt{MorphMany} i inverzna joj \texttt{MorphTo} - koje označavaju polimofnu vezu (neovisnu o tipu modela) jedan prema više (1:N) odnosno više prema jedan (N:1)~\cite{relationships}.
 
 \paragraph{Kolekcije}\mbox{}\\
-\indent U Laravelu postoji bazna klasa \texttt{Illuminate\textbackslash Support\textbackslash Collection} koja pruža praktičan \textit{wrapper} (omotač) za rad s nizovima podataka. Eloquent upiti tj. sve Eloquent metode koje vraćaju više od jednog rezultata vraćaju instancu klase \\ \texttt{Illuminate\textbackslash Database\textbackslash Eloquent\textbackslash Collection}. Objekt Eloquent kolekcija nasljeđuje baznu Laravel kolekciju pa tako nasljeđuje i sve metode dosupne u baznoj klasi~\cite{eloquentCollections}.
+\indent U Laravelu postoji bazna klasa \texttt{Illuminate\textbackslash Support\textbackslash Collection} koja pruža praktičan \textit{wrapper} (omotač) za rad s nizovima podataka. Eloquent upiti tj. sve Eloquent metode koje vraćaju više od jednog rezultata vraćaju instancu klase \texttt{Illuminate\textbackslash \linebreak Database\textbackslash Eloquent\textbackslash Collection}. Objekt Eloquent kolekcija nasljeđuje baznu Laravel kolekciju pa tako nasljeđuje i sve metode dosupne u baznoj klasi~\cite{eloquentCollections}.
 
 Neke od najkorištenijih metoda su \texttt{all}, \texttt{count}, \texttt{dd}, \texttt{dump}, \texttt{except}, \texttt{find},\texttt{first}, \texttt{firstOrFail}, \texttt{get}, \texttt{only}, \texttt{pop}, \texttt{push}, \texttt{sortBy}, \texttt{sortByDesc}, \texttt{toArray}, \texttt{toJson}, \texttt{where}, \texttt{whereBetween}, \texttt{whereIn} itd.~\cite{collections}
 
 \subsection{Usmjerivanje zahtjeva (engl. \textit{routing})}
-Sve rute u Laravel aplikaciji definirane su unutar datoteka koje se nalaze unutar direktorija \texttt{routes}. Te su datoteke automatski učitane zahvaljujući \\ \texttt{App\textbackslash Providers\textbackslash RouteServiceProvider}. U datoteci \texttt{routes/web.php} definirane su rute korištene na aplikacijskom web sučelju, koje se mogu dohvatiti unosom URL-a u web preglednik. Rutama iz \texttt{routes/web.php} dodijeljena je \texttt{web} \textit{middleware} grupa koja pruža značajke kao što su stanje sesija i CSRF (engl. \textit{Cross-Site Request Forgery}) zaštita~\cite{routing}.
+Sve rute u Laravel aplikaciji definirane su unutar datoteka koje se nalaze unutar direktorija \texttt{routes}. Te su datoteke automatski učitane zahvaljujući \texttt{App\textbackslash Providers\textbackslash \linebreak RouteServiceProvider}. U datoteci \texttt{routes/web.php} definirane su rute korištene na aplikacijskom web sučelju, koje se mogu dohvatiti unosom URL-a u web preglednik. Rutama iz \texttt{routes/web.php} dodijeljena je \texttt{web} \textit{middleware} grupa koja pruža značajke kao što su stanje sesija i CSRF (engl. \textit{Cross-Site Request Forgery}) zaštita~\cite{routing}.
 
-Ispis~\ref{routes} prikazuje sadržaj datoteke \texttt{routes/web.php} gdje je vidljiv način na koji su rute definirane. Podijeljene su prvenstveno u dvije grupe - prva dostupna svim prijavljenim korisnicima (grupa koristi \textit{middleware} koji zahtijeva autentikaciju), te druga dostupna samo admin korisnicima (korišten \textit{custom} \textit{middleware} \texttt{can:admin-privileges}), a zadnja defnirana ruta je ona koju koristi kontoler pri promjeni jezika aplikacije o čemu će biti riječi u poglavlju~\ref{subsection:localization}. Svakoj ruti dodijeljeno je jedinstveno ime koristeći metodu \texttt{name}.
+Ispis~\ref{routes} prikazuje sadržaj datoteke \texttt{routes/web.php} gdje je vidljiv način na koji su rute definirane. Podijeljene su prvenstveno u dvije grupe - prva dostupna svim prijavljenim korisnicima (grupa koristi \textit{middleware} koji zahtijeva autentikaciju), te druga dostupna samo admin korisnicima (korišten \textit{custom} \textit{middleware} \texttt{can:admin-privileges}), a zadnja defnirana ruta je ona koju koristi kontroler pri promjeni jezika aplikacije o čemu će biti riječi u poglavlju~\ref{subsection:localization}. Svakoj ruti dodijeljeno je jedinstveno ime koristeći metodu \texttt{name}.
 
 \begin{lstlisting}[caption={Sadržaj datoteke \texttt{routes/web.php}}, label=routes, escapechar=&]
 <?php
 
-use App\Http\Controllers\LanguageController;
-use App\Http\Livewire\Admin\ShowProjects as AdminShowProjects;
-use App\Http\Livewire\Admin\ShowTeams;
-use App\Http\Livewire\Admin\ShowUsers;
-use App\Http\Livewire\Media\ShowResources;
-use App\Http\Livewire\Posts\ShowPosts;
-use App\Http\Livewire\Projects\ShowProjects;
-use Illuminate\Support\Facades\Route;
+// use ... -> required imports
 
 /*
 |------------------------------------------------------------------------
@@ -721,12 +698,11 @@ Route::get('locale/{locale}', [LanguageController::class, 'switchLocale']) &\lab
 
 \end{lstlisting}
 
-
-Izvršavanjem Artisan naredbe \texttt{route:list} mogu se izlistati sve rute definirane u aplikaciji te je rezultat izvršavanja iste prikazan na slici~\ref{fig:routes}.
+Izvršavanjem Artisan naredbe \texttt{route:list} mogu se izlistati sve rute definirane u aplikaciji te je rezultat izvršavanja prikazan na slici~\ref{fig:routes}.
 \begin{figure}[H]
-	\includegraphics[width=0.9\linewidth,clip=]{assets/routes.png}
+	\includegraphics[width=0.85\linewidth,clip=]{assets/routes.png}
 	\centering
-	\caption{Izlist svih ruta definiranih u aplikaciji pomoću  Artisan naredbe \texttt{route:list}}
+	\caption{Lista svih ruta definiranih u aplikaciji pomoću  Artisan naredbe \texttt{route:list}}
 	\label{fig:routes}
 \end{figure}
 
@@ -772,7 +748,7 @@ class ConfigureLocale
 
 \end{lstlisting}
 
-Pojedini \textit{middleware} treba se registrirati u aplikaciji - ako se želi da je aktivan globalno dodaje ga se među vrijednosti podatkovnog člana \texttt{\$middleware} klase \\ \texttt{app/Http/Kernel.php}, a ako se želi da djeluje na pojedinoj ruti na nju ga se dodaje pomoću metode \texttt{middleware}. Radi jednostavnosti i praktičnosti, unutar klase \\ \texttt{app/Http/Kernel.php} u podatkovnom članu \texttt{\$middlewareAliases} pojedinom \textit{middlewareu} se može nadjenuti \textit{alias} ime~\cite{middleware} (pogledati ispis~\ref{middlewareAliases}).
+Svaki pojedinačni \textit{middleware} potrebno je registrirati u aplikaciji - ako ga se želi aktivirati na globalnoj razini dodaje ga se među vrijednosti podatkovnog člana \texttt{\$middleware} klase \texttt{app/Http/Kernel.php}, a ako ga se želi aktivirati na pojedinoj ruti na nju ga se dodaje pomoću metode \texttt{middleware}. Radi jednostavnosti i praktičnosti, unutar klase \texttt{app/Http/Kernel.php} u podatkovnom članu \texttt{\$middlewareAliases} pojedinom \textit{middlewareu} se može nadjenuti \textit{alias} ime~\cite{middleware} (pogledati ispis~\ref{middlewareAliases}).
 
 \begin{lstlisting}[caption={Definiranje \textit{middleware} \textit{aliasa}}, label=middlewareAliases]
     /**
@@ -817,28 +793,26 @@ Različite \textit{middleware} klase može se međusobno grupirati pod istim klj
         ],
 
         'api' => [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // ...
         ],
     ];
 \end{lstlisting}
 
 \subsection{Autentikacija}
-Početni komplet Laravel Jetstream u potpunosti se pobrinuo za cjelokupan autentikacijski sustav aplikacije na način da koristi autentikacijske servise Laravel Fortifyja, uz to pruživši robustan i moderan \textit{scaffolding} korisničkog sučelja. Laravel autentikacijskim servisima može se pristupiti putem fasade (engl. \textit{facade}) \texttt{Auth}~\cite{authentication}.
+Početni komplet Laravel Jetstream u potpunosti se pobrinuo za cjelokupan autentikacijski sustav aplikacije na način da koristi autentikacijske usluge Laravel Fortifyja, uz to pruživši robustan i moderan \textit{scaffolding} korisničkog sučelja. Laravel autentikacijskim uslugama može se pristupiti putem fasade (engl. \textit{facade}) \texttt{Auth}~\cite{authentication}.
 
 Na slici~\ref{fig:register} prikazano je pristupanje ruti \texttt{register} unutar web preglednika, a na slici~\ref{fig:login} ruti \texttt{login}.
 \begin{figure}[H]
-	\includegraphics[width=1\linewidth,clip=]{assets/register.png}
+	\includegraphics[width=0.8\linewidth,clip=]{assets/register.png}
 	\centering
-	\caption{\texttt{/register}}
+	\caption{Registracija}
 	\label{fig:register}
 \end{figure}
 
 \begin{figure}[H]
-	\includegraphics[width=1\linewidth,clip=]{assets/login.png}
+	\includegraphics[width=0.8\linewidth,clip=]{assets/login.png}
 	\centering
-	\caption{\texttt{/login}}
+	\caption{Prijava}
 	\label{fig:login}
 \end{figure}
 
@@ -846,9 +820,11 @@ Na slici~\ref{fig:register} prikazano je pristupanje ruti \texttt{register} unut
 U Laravelu postoje dva osnovna načina na koji se autoriziraju akcije - koristeći vrata (engl. \textit{gates}) ili koristeći politike (engl. \textit{policies}). Vrata je najbolje primjenjivati za autorizaciju akcija koje nisu vezane uz model ili resurs već su općenite za cijelu aplikaciju, a politike su namijenjene za autorizaciju akcija nad određenim modelom/resursom~\cite{authorization}.
 
 \subsubsection{Vrata}
-Vrata (engl. \textit{gates}) određuju ima li korisnik ovlasti za izvršavanje određene radnje. Obično se definiraju unutar \texttt{boot} metode u klasi \\ {\texttt{App\textbackslash Providers\textbackslash AuthServiceProvider}} koristeći fasadu \texttt{Gate}~\cite{authorization}.
+Vrata (engl. \textit{gates}) određuju ima li korisnik ovlasti za izvršavanje određene radnje. Obično se definiraju unutar \texttt{boot} metode u klasi {\texttt{App\textbackslash Providers\textbackslash \linebreak 
+AuthServiceProvider}} koristeći fasadu \texttt{Gate}~\cite{authorization}.
 
-U ispisu~\ref{gatesAdmin} prikazana je \texttt{boot} metoda u kojoj se definiraju vrata \\ \texttt{'admin-privileges'} te se koristeći metodu \texttt{before} definira \textit{closure} koji će biti provjeravan prije svih ostalih autorizacijskih provjera.
+U ispisu~\ref{gatesAdmin} prikazana je \texttt{boot} metoda u kojoj se definiraju vrata \linebreak 
+\texttt{'admin-privileges'} te se koristeći metodu \texttt{before} definira \textit{closure} koji će biti provjeravan prije svih ostalih autorizacijskih provjera.
 
 \begin{lstlisting}[caption={Vrata korištena za implementaciju admin korisnika i administratorskog sučelja}, label=gatesAdmin]
     /**
@@ -890,25 +866,18 @@ Politike (engl. \textit{policies}) su klase čija je zadaća organizacija autori
     ];
 \end{lstlisting}
 
-Kao primjer politike u ispisu~\ref{postPolicy} prikazana je datoteka \texttt{PostPolicy.php} tj. politika koja definira autorizaciju akcija nad modelom \texttt{Post}. Tu je definirano da pojedinu objavu mogu vidjeti samo članovi tima kojem objava pripada, također da objavu može urediti i ažurirati samo onaj korisnik koji ju je i objavio, a ovlasti za izbrisati objavu imaju vlasnik tima, vlasnik/tvorac projekta kojem objava pripada te autor objave.
+Kao primjer politike u ispisu~\ref{postPolicy} prikazana je datoteka \texttt{PostPolicy.php} tj. politika koja definira autorizaciju akcija nad modelom \texttt{Post}. Tu je definirano kako pojedinu objavu mogu vidjeti samo članovi tima kojem objava pripada, također kako objavu može urediti i ažurirati samo onaj korisnik koji ju je i objavio, a ovlasti za izbrisati objavu imaju vlasnik tima, vlasnik/tvorac projekta kojem objava pripada te autor objave.
 
-\begin{lstlisting}[caption={Politika za autorizaciju akcija nad modelom \texttt{Post}}, label=postPolicy]
+\begin{lstlisting}[caption={Dio k\^oda politike za autorizaciju akcija nad modelom \texttt{Post}}, label=postPolicy]
 <?php
 
 namespace App\Policies;
 
-use App\Models\Post;
-use App\Models\User;
+// use ... -> required imports
 
 class PostPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        return true;
-    }
+    // ...
 
     /**
      * Determine whether the user can view the model.
@@ -916,14 +885,6 @@ class PostPolicy
     public function view(User $user, Post $post): bool
     {
         return $user->belongsToTeam($post->project->team);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return true;
     }
 
     /**
@@ -944,21 +905,7 @@ class PostPolicy
             $post->user->id == $user->id;
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Post $post): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Post $post): bool
-    {
-        return false;
-    }
+    // ...
 }
 
 \end{lstlisting}
@@ -966,9 +913,9 @@ class PostPolicy
 Za provjeru korisnikovih ovlasti za izvršenje pojedine akcije nad modelom/resursom koristi se metoda \texttt{authorize}, a unutar Blade predložaka koriste se još i direktive \texttt{@can}, \texttt{@cannot}, \texttt{@canany}~\cite{authorization}.
 
 \subsection{Livewire komponente}
-Livewire je \textit{full-stack} razvojni okvir za Laravel koji olakšava razvijanje dinamičkog korisničkog sučelja. Razvio ga je Caleb Porzio, otvorenog je k\^oda te je k\^od dostupan na platformi GitHub~\cite{livewireGithub}. Radi na način da se prvo inicijalno prikazuje Livewire komponenta na stranici, a zatim kada korisnik s njom interaktira Livewire šalje AJAX zahtjev prema serveru s ažuriranim podatcima. Server zatim iznova prikazuje tu komponentu i vraća novi HTML, a Livewire mutira DOM (engl. \textit{Document Object Model}) tako da se učinjene promjene očitaju na stranici~\cite{livewire}.
+Livewire je \textit{full-stack} razvojni okvir za Laravel koji olakšava razvijanje dinamičkog korisničkog sučelja. Razvio ga je Caleb Porzio, otvorenog je k\^oda te je k\^od dostupan na platformi GitHub~\cite{livewireGithub}. Radi na način da se prvo inicijalno prikazuje Livewire komponenta na stranici, a zatim kada korisnik s njom interaktira Livewire šalje AJAX zahtjev prema poslužitelju s ažuriranim podatcima. Poslužitelj zatim iznova prikazuje tu komponentu i vraća novi HTML, a Livewire mutira DOM (engl. \textit{Document Object Model}) tako da se učinjene promjene očitaju na stranici~\cite{livewire}.
 
-Livewire komponenta kreira se pozivom Artisan naredbe \texttt{make:livewire} te će se tada kreirati sljedeće dvije datoteke - u direktoriju \texttt{app/Http/Livewire} kreirat će se klasa Livewire komponente, a u direktoriju \texttt{resources/views/livewire} \texttt{.blade.php} datoteka Livewire komponente. U ispisu~\ref{showPostClass} prikazana je klasa Livewire komponente \texttt{ShowPost}.
+Livewire komponenta kreira se pozivom Artisan naredbe \texttt{make:livewire} te će se tada kreirati sljedeće dvije datoteke - u direktoriju \texttt{app/Http/Livewire} kreirat će se klasa Livewire komponente, a u direktoriju \texttt{resources/views/livewire} \linebreak \texttt{.blade.php} datoteka Livewire komponente. U ispisu~\ref{showPostClass} prikazana je klasa Livewire komponente \texttt{ShowPost}.
 
 \begin{lstlisting}[caption={\texttt{ShowPost.php} - klasa Livewire komponente}, label=showPostClass]
 <?php
@@ -1004,31 +951,24 @@ class ShowPost extends Component
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-
         $this->authorize('update', $post);
-
         $this->postId = $id;
         $this->title = $post->title;
         $this->content = $post->content;
-
         $this->openEditModal = true;
     }
 
     public function update()
     {
         $this->validate();
-
         if ($this->postId) {
             Post::find($this->postId)->update([
                 'title' => $this->title,
                 'content' => $this->content,
             ]);
-
             $this->emitSelf('postUpdated');
             $this->banner(__('Post updated successfully.'));
-
             $this->openEditModal = false;
-
             $this->reset(['title', 'content']);
         }
     }
@@ -1036,11 +976,8 @@ class ShowPost extends Component
     public function delete($id)
     {
         $post = Post::findOrFail($id);
-
         $this->authorize('delete', $post);
-
         $this->postId = $id;
-
         $this->openDeleteModal = true;
     }
 
@@ -1049,10 +986,8 @@ class ShowPost extends Component
         if ($this->postId) {
             Comment::where('post_id', $this->postId)->delete();
             Post::where('id', $this->postId)->delete();
-
             $this->emit('postDeleted');
             $this->banner(__('Post deleted successfully.'));
-
             $this->openDeleteModal = false;
         }
     }
@@ -1060,18 +995,18 @@ class ShowPost extends Component
 
 \end{lstlisting}
 
-Livewire komponenta može biti uključena u Blade predložak koristeći direktivu \\ \texttt{@livewire}.
+Livewire komponenta može biti uključena u Blade predložak koristeći direktivu \linebreak \texttt{@livewire}.
 
-Validacija atributa komponente u Livewireu obavlja se pozivom metode \\ \texttt{\$this->validate()} koja zatim provjerava pravila definirana unutar podatkovnog člana \texttt{\$rules} za pojedini atribut~\cite{livewireValidation}.
+Validacija atributa komponente u Livewireu obavlja se pozivom metode \linebreak \texttt{\$this->validate()} koja zatim provjerava pravila definirana unutar podatkovnog člana \texttt{\$rules} za pojedini atribut~\cite{livewireValidation}.
 
-Kako bi se unutar Livewire komponente koristila paginacija potrebno je da komponenta koristi osobinu (engl. \textit{trait}) \texttt{WithPagination}~\cite{livewirePagination}.
+Kako bi se unutar Livewire komponente koristila paginacija potrebno je koristiti osobinu (engl. \textit{trait}) \texttt{WithPagination}~\cite{livewirePagination}.
 
 \subsubsection{Akcije}
 Akcije u Livewireu "osluškuju" interakcije na stranici te pozivaju odgovarajuću metodu na Livewire komponenti~\cite{livewireActions}.
 
-Tako, gledajući prethodni ispis, metode \texttt{edit}, \texttt{update}, \texttt{delete}, \texttt{destroy} u klasi Livewire komponente izvršavaju se nakon interakcije korisnika nad određenim elementom na stranici - primjerice korisnik interaktira s gumbom (engl. \textit{button}) koji "osluškuje" određeni događaj putem direktive \texttt{wire} kao npr. \texttt{wire:click="edit"}, \\ \texttt{wire:click="update"},  \texttt{wire:click="delete"}, \texttt{wire:click="destroy"} u pripadajućem Blade predlošku.
+Tako, gledajući prethodni ispis, metode \texttt{edit}, \texttt{update}, \texttt{delete}, \texttt{destroy} u klasi Livewire komponente izvršavaju se nakon interakcije korisnika nad određenim elementom na stranici - primjerice korisnik interaktira s botunom (engl. \textit{button}) koji "osluškuje" određeni događaj putem direktive \texttt{wire} kao npr. \texttt{wire:click="edit"}, \linebreak \texttt{wire:click="update"},  \texttt{wire:click="delete"}, \texttt{wire:click="destroy"} u pripadajućem Blade predlošku.
 
-Kako bi se akcije u Livewireu mogle autorizirati potrebno je da Livewire komponenta koristi osobinu (engl. \textit{trait}) \texttt{AuthorizesRequests} te je zatim moguće pozvati metodu \texttt{\$this->authorize()} unutar Livewire komponente~\cite{livewireAuthorization}. 
+Kako bi se akcije u Livewireu mogle autorizirati potrebno je koristiti osobinu (engl. \textit{trait}) \texttt{AuthorizesRequests} te je zatim moguće pozvati metodu \texttt{\$this->authorize()} unutar Livewire komponente~\cite{livewireAuthorization}. 
 
 \subsubsection{Događaji}
 Livewire komponente koje "žive" na istoj stranici međusobno mogu komunicirati putem globalnog sustava događaja~\cite{livewireEvents}.
@@ -1083,10 +1018,11 @@ Unutar klase Livewire komponente i to u podatkovnom članu \texttt{\$listeners} 
 \subsection{Pohrana datoteka}
 Laravel integrira Flysystem~\cite{flysystemGitHub} PHP paket Franka de Jongea te tako pruža apstrakciju datotečnog sustava - nudi \textit{drivere} za rad s lokalnim datotečnim sustavom, SFTP-om (engl. \textit{Secure File Transfer Protocol}) te Amazon S3 pohranom objekata u oblaku~\cite{fileStorage}.
 
-Konfiguracijska datoteka datotečnog sustava u Laravelu jest \texttt{filesystems.php} unutar direktorija \texttt{config} te se u njoj konfiguriraju tzv. diskovi Laravel datotečnog sustava od kojih svaki predstavlja jedinstveni \textit{driver} te lokaciju za pohranu. \textit{Driver} \texttt{local} upravlja datotekama pohranjenima na lokalnom serveru na kojemu se pokreće Laravel aplikacija, a \textit{driver} \texttt{s3} koristi se za pohranu datoteka na Amazon S3 pohranu objekata u oblaku~\cite{fileStorage}. 
+Konfiguracijska datoteka datotečnog sustava u Laravelu jest \texttt{filesystems.php} unutar direktorija \texttt{config} te se u njoj konfiguriraju tzv. diskovi Laravel datotečnog sustava od kojih svaki predstavlja jedinstveni \textit{driver} te lokaciju za pohranu. \textit{Driver} \texttt{local} upravlja datotekama pohranjenima na lokalnom poslužitelju na kojemu se pokreće Laravel aplikacija, a \textit{driver} \texttt{s3} koristi se za pohranu datoteka na Amazon S3 pohranu objekata u oblaku~\cite{fileStorage}. 
 
 \subsubsection{MinIO - AWS S3 kompatibilan servis za pohranu}
 U aplikaciji \textit{Teamstructor} za pohranu timskih resursa korišten je AWS (Amazon Web Services) S3 kompatibilan servis za pohranu naziva \textbf{MinIO}~\cite{minio}. On koristi \texttt{s3} disk u konfiguracijskoj datoteci.
+\pagebreak
 
 Prije korištenja \texttt{s3} \textit{drivera} potrebno je instalirati Flysystem S3 paket putem Composera pozivom naredbe: \texttt{composer require league/flysystem-aws-s3-v3 "\textasciicircum 3.0" -{}-with-all-dependencies}~\cite{fileStorage}. Također je potrebno dodati MinIO servis u \texttt{docker-compose.yml} datoteku kao što je prikazano u ispisu~\ref{minioDocker} te definirati potrebne \textit{environment} varijable unutar \texttt{.env} datoteke kao u ispisu~\ref{minioEnv}.
 
@@ -1127,25 +1063,25 @@ AWS_USE_PATH_STYLE_ENDPOINT=true
 
 Pristupajući URL-u \url{http://localhost:9000} unutar web preglednika prikazat će se MinIO Object Store zaslon za prijavu kao na slici~\ref{fig:minioLogin}, a uspješnom prijavom koristeći korisničko ime i lozinku definirane za \texttt{minio} Docker spremnik prikazat će se Object Browser zaslon prikazan na slici~\ref{fig:minioObjectBrowser} na kojemu je moguće pregledati i pristupiti pojedinim \textit{bucketima}~\cite{minioContainer}.
 \begin{figure}[H]
-	\includegraphics[width=1\linewidth,clip=]{assets/minio-login.png}
+	\includegraphics[width=0.85\linewidth,clip=]{assets/minio-login.png}
 	\centering
-	\caption{MinIO Console - MinIO Object Store \textit{login} zaslon}
+	\caption{MinIO Console - MinIO Object Store zaslon za prijavu (engl. \textit{login})}
 	\label{fig:minioLogin}
 \end{figure}
 
 \begin{figure}[H]
-	\includegraphics[width=1\linewidth,clip=]{assets/minio-object-browser.png}
+	\includegraphics[width=0.85\linewidth,clip=]{assets/minio-object-browser.png}
 	\centering
 	\caption{MinIO Console - MinIO Object Browser zaslon i stvoreni \textit{bucket}}
 	\label{fig:minioObjectBrowser}
 \end{figure}
 
-\subsection{Spatie Laravel Media Library paket}
-Za implementaciju timskih resursa korišten je Laravel Media Library \\ (\texttt{spatie/laravel-medialibrary}) paket razvijen od strane Spatie tima - belgijske \textit{development} agencije koja razvija mnogo poznatih paketa otvorenog k\^oda za PHP i Laravel ekosustav.
+\subsection{Implementacija timskih resursa koristeći Spatie Laravel Media Library paket}
+Za implementaciju timskih resursa korišten je Laravel Media Library \linebreak (\texttt{spatie/laravel-medialibrary}) paket razvijen od strane Spatie tima - belgijske \textit{development} agencije koja razvija mnogo poznatih paketa otvorenog k\^oda za PHP i Laravel ekosustav.
 
 Media Library paket instalira se putem Composera naredbom \texttt{composer require "spatie/laravel-medialibrary:\textasciicircum 10.0.0"} te je potom potrebno objaviti migraciju za kreiranje tablice \texttt{media} pomoću Artisan naredbe \texttt{vendor:publish} te primijeniti tu migraciju na bazu podataka~\cite{mediaLibrary}.
 
-Za ostvariti željenu vezu između modela \texttt{Project} i \texttt{Resource} potrebno je da model \texttt{Project} implementira \textit{interface} \texttt{HasMedia} i osobinu (engl. \textit{trait}) \\ \texttt{InteractsWithMedia}, a model \texttt{Resource} nasljeđuje bazni model \texttt{Media} iz Media Library paketa. Također je potrebno u konfiguracijskoj datoteci \\ \texttt{config/media-library.php} navesti naziv klase \textit{custom} medijskog modela kao u ispisu~\ref{mediaModelConfig}.
+Za ostvariti željenu vezu između modela \texttt{Project} i \texttt{Resource} potrebno je da model \texttt{Project} implementira \textit{interface} \texttt{HasMedia} i osobinu (engl. \textit{trait}) \linebreak \texttt{InteractsWithMedia}, a model \texttt{Resource} nasljeđuje bazni model \texttt{Media} iz Media Library paketa. Također je potrebno u konfiguracijskoj datoteci \texttt{config/ \linebreak media-library.php} navesti naziv klase \textit{custom} medijskog modela kao u ispisu~\ref{mediaModelConfig}.
 
 \begin{lstlisting}[caption={Specificiranje naziva klase \textit{media} modela u \texttt{config/media-library.php}}, label=mediaModelConfig]
     /*
@@ -1155,6 +1091,7 @@ Za ostvariti željenu vezu između modela \texttt{Project} i \texttt{Resource} p
 \end{lstlisting}
 
 U ispisu~\ref{uploadResource} vidljiv je dio k\^oda zaslužan za asociranje učitanog resursa s pripadajućim projektom te pohranjivanje učitanog resursa na \texttt{s3} disk. U prikazanoj metodi \texttt{save} iz klase Livewire komponente \texttt{UploadResource} prvo se validira \textit{input} tj. učitana datoteka, zatim se koristeći metodu \texttt{addMedia} učitani resurs asocira s pripadajućim projektom. Pozivom metode \texttt{toMediaCollection} resurs se pohranjuje na \texttt{s3} disk u zadanu medijsku kolekciju, a pozivom metode \texttt{withCustomProperties} na resurs se dodaje i  \textit{custom} svojstvo \texttt{'user\_id'} gdje spremamo identifikator korisnika koji je izvršio \textit{upload} te datoteke.
+\pagebreak
 
 \begin{lstlisting}[caption={Asociranje resursa s pripadajućim projektom i njegovo pohranjivanje koristeći Media Library metode}, label=uploadResource]
     public function save()
@@ -1177,7 +1114,7 @@ U ispisu~\ref{uploadResource} vidljiv je dio k\^oda zaslužan za asociranje uči
 
 \subsection{Lokalizacija}
 \label{subsection:localization}
-Zadano Laravel aplikacija ne sadrži direktorij \texttt{lang} u kojem bi bile pohranjene potrebne jezične datoteke, ali ga se može stvoriti izvođenjem Artisan naredbe \\ \texttt{lang:publish}~\cite{localization}. 
+Zadano Laravel aplikacija ne sadrži direktorij \texttt{lang} u kojem bi bile pohranjene potrebne jezične datoteke, ali ga se može stvoriti izvođenjem Artisan naredbe \linebreak \texttt{lang:publish}~\cite{localization}. 
 
 Lokalizacija \textit{Teamstructor} aplikacije izvedena je na način da su podržani engleski i hrvatski jezik što je jasno naznačeno u datoteci \texttt{config/locales.php} čiji je sadržaj prikazan u ispisu~\ref{configLocales}.
 
@@ -1234,22 +1171,23 @@ class LanguageController extends Controller
 
 \end{lstlisting}
 
-U konfiguracijsku datoteku za NGINX server \texttt{default.conf} dodana je linija \\ \texttt{rewrite \textasciicircum /(en|hr)/?(.*)?  https://teamstructor.test/\$2?locale=\$1 \\ permanent;}, te u \texttt{.htaccess} datoteku linija \\ \texttt{RedirectMatch "\textasciicircum /(en|hr)/?(.*)?" "/\$2?locale=\$1"} što omogućava da se u web pregledniku URL unesen u formi \url{https://teamstructor.test/hr} tumači kao \url{https://teamstructor.test/?locale=hr}.
+U konfiguracijsku datoteku za Nginx poslužitelj \texttt{default.conf} dodana je linija \linebreak \texttt{rewrite \textasciicircum /(en|hr)/?(.*)?  https://teamstructor.test/\$2?locale \linebreak =\$1 permanent;} te u \texttt{.htaccess} datoteku linija \texttt{RedirectMatch \linebreak "\textasciicircum /(en|hr)/?(.*)?" "/\$2?locale=\$1"} što omogućava da se u web pregledniku URL unesen u formi \url{https://teamstructor.test/hr} tumači kao \linebreak \url{https://teamstructor.test/?locale=hr}.
 
-Naposlijetku je implementiran i \textit{language switcher} tj. gumb za promjenu jezika prikazan na slici~\ref{fig:localeSwitcher}.
+Naposlijetku je implementiran i \textit{language switcher} tj. padajući izbornik (engl. \textit{dropdown menu}) za promjenu jezika prikazan na slici~\ref{fig:localeSwitcher}.
 \begin{figure}[H]
-	\includegraphics[width=0.7\linewidth,clip=]{assets/language-switcher.png}
+	\includegraphics[width=0.9\linewidth,clip=]{assets/language-switcher.png}
 	\centering
-	\caption{Gumb u navigacijskoj traci koji služi za promjenu trenutnog jezika aplikacije}
+	\caption{Padajući izbornik u navigacijskoj traci koji služi za promjenu trenutnog jezika aplikacije}
 	\label{fig:localeSwitcher}
 \end{figure}
+\pagebreak
 
 \subsection{Testiranje i kvaliteta k\^oda}
 
 \subsubsection{Korišteni alati}
 Pri \textit{developmentu} radi bržeg otkrivanja i otklanjanja pogrešaka te praćenja performansi i ponašanja u aplikaciji korišteni su paketi \textbf{Laravel Debug Bar}~\cite{laravelDebugbarGitHub} i \textbf{Laravel Telescope}~\cite{telescope}.
 
-Također je korišten i \textit{code style fixer} \textbf{Laravel Pint}~\cite{pint}, izgrađen na PHP-CS-Fixeru, koji je automatski dostupan za korištenje uz Laravel instalaciju. Pomaže da k\^od ostane "čist" i konzistentan te se popravak \textit{code stylea} inicira izvođenjem naredbe \\ \texttt{.vendor/bin/pint} iz terminala. 
+Također je korišten i \textit{code style fixer} \textbf{Laravel Pint}~\cite{pint}, izgrađen na PHP-CS-Fixeru, koji je automatski dostupan za korištenje uz Laravel instalaciju. Pomaže da k\^od ostane "čist" i konzistentan te se popravak \textit{code stylea} inicira izvođenjem naredbe \linebreak \texttt{.vendor/bin/pint} iz terminala. 
 
 Radi pretpregleda testne elektroničke pošte u aplikaciji (poslane i primljene) dodan je servis \textbf{MailHog}~\cite{mailhogGitHub} u datoteku \texttt{docker-compose.yml} (prikazano u ispisu~\ref{mailhog}) te se MailHog web sučelju može pristupiti unosom URL-a \url{http://localhost:8025} u web preglednik.
 
@@ -1263,9 +1201,9 @@ Radi pretpregleda testne elektroničke pošte u aplikaciji (poslane i primljene)
 \end{lstlisting}
 
 \subsubsection{Pisanje i pokretanje testova}
-U aplikacijskom \texttt{test} direktoriju zadano se nalaze dva poddirektorija - \texttt{Feature} i \texttt{Unit}. \textit{Unit} testovi testiraju mali izolirani dio k\^oda, a \textit{feature} testovi testiraju veće dijelove k\^oda tj. pojedine funkcionalnosti u cijelosti~\cite{testing}.
+U aplikacijskom \texttt{test} direktoriju zadano se nalaze dva poddirektorija - \texttt{Feature} i \texttt{Unit}. Namjena \textit{unit} testova jest testiranje manjih izoliranih dijelova k\^oda, a namjena testova funkcionalnosti jest testiranje većih dijelova k\^oda tj. pojedinih funkcionalnosti u cijelosti~\cite{testing}.
 
-Kako se testiranje ne bi provodilo nad glavnom "radnom" bazom podataka i tako se vršile promjene nad stvarnim zapisima u bazi, za potrebe testiranja definirano je posebno izolirano \texttt{sqlite\_testing} okruženje baze podataka u memoriji (prikazano u ispisu~\ref{sqliteTesting}).
+Kako se testiranje ne bi provodilo nad glavnom "radnom" bazom podataka i tako se obavljale promjene nad stvarnim zapisima u bazi, za potrebe testiranja definirano je posebno izolirano \texttt{sqlite\_testing} okruženje baze podataka u memoriji (prikazano u ispisu~\ref{sqliteTesting}).
 
 \begin{lstlisting}[caption={Testno okruženje baze podataka definirano u \texttt{config/database.php}}, label=sqliteTesting]
         'sqlite_testing' => [
@@ -1311,9 +1249,9 @@ class CreateCommentFormTest extends TestCase
 
 \end{lstlisting}
 
-\textbf{Pest} PHP razvojno okruženje za testiranje potrebno je instalirati putem Composera: \texttt{composer require pestphp/pest -{}-dev -{}-with-all-dependencies}, \\ a zatim inicijalizirati Pest u trenutnom projektu koristeći naredbu \\ \texttt{./vendor/bin/pest -{}-init}~\cite{pestInstallation}.
+\textbf{Pest} PHP razvojno okruženje za testiranje potrebno je instalirati putem Composera: \texttt{composer require pestphp/pest -{}-dev -{}-with-all-dependencies}, \linebreak a zatim inicijalizirati Pest u trenutnom projektu koristeći naredbu \linebreak \texttt{./vendor/bin/pest -{}-init}~\cite{pestInstallation}.
 
-Moguće je instalirati Pest dodatke (engl. \textit{plugins}) za Laravel i Livewire putem Composera: \texttt{composer require pestphp/pest-plugin-laravel -{}-dev} i \\ \texttt{composer require pestphp/pest-plugin-livewire -{}-dev}~\cite{pestPlugins}.
+Moguće je instalirati Pest dodatke (engl. \textit{plugins}) za Laravel i Livewire putem Composera: \texttt{composer require pestphp/pest-plugin-laravel -{}-dev} i \linebreak \texttt{composer require pestphp/pest-plugin-livewire -{}-dev}~\cite{pestPlugins}.
 
 Testovi se nakon instalacije Pesta mogu pokretati naredbom \texttt{./vendor/bin/pest}, a Pest test može se kreirati pozivom Artisan naredbe \texttt{pest:test}~\cite{pestInstallation}.
 
@@ -1349,7 +1287,7 @@ Ispravci \textit{bugova} trebali bi se slati na granu najrecentnije verzije koja
 
 \textit{Minor} značajke koje su u potpunosti kompatibline s prethodnim verzijama trenutnog izdanja mogu se poslati na najrecentniju stablinu granu, a \textit{major} nove značajke ili značajke s ključnim \textit{breaking} izmjenama uvijek se trebaju slati u \texttt{master} granu koja sadrži nadolazeće izdanje~\cite{contributions}.
 
-Prilikom izrade ovog završnog rada i razvijanja aplikacije koristeći se početnim kompletom Laravel Jetstream uočila sam stilsku nekonzistentnost u korisničkom sučelju pri prikazivanju profilne fotografije korisnika u navedenom Laravel \textit{first-party} paketu te sam zatim dala svoj doprinos. Bilo je potrebno \textit{forkati} izvorni repozitorij, učiniti potrebne izmjene u k\^odu na posebnoj grani te otvoriti \texttt{pull request} (dostupan na poveznici \url{https://github.com/laravel/jetstream/pull/1304}). Izmjene koje sam učinila su prihvaćene od strane Laravel tima te objavljene u sklopu Laravel Jetstream izdanja v3.1.3 koji je dostupan na poveznici \url{https://github.com/laravel/jetstream/releases/tag/v3.1.3} te je  na slici~\ref{fig:jetstreamCommits} prikazana povijest \textit{commita} za to izdanje.
+Prilikom izrade ovog završnog rada i razvijanja aplikacije koristeći se početnim kompletom Laravel Jetstream uočila sam stilsku nekonzistentnost u korisničkom sučelju pri prikazivanju profilne fotografije korisnika u navedenom Laravel \textit{first-party} paketu te sam zatim dala svoj doprinos. Bilo je potrebno \textit{forkati} izvorni repozitorij, učiniti potrebne izmjene u k\^odu na posebnoj grani te otvoriti \textit{pull request} (dostupan na poveznici \url{https://github.com/laravel/jetstream/pull/1304}). Izmjene koje sam učinila su prihvaćene od strane Laravel tima te objavljene u sklopu Laravel Jetstream izdanja v3.1.3 koje je dostupno na poveznici \url{https://github.com/laravel/jetstream/releases/tag/v3.1.3} te je  na slici~\ref{fig:jetstreamCommits} prikazana povijest \textit{commita} za to izdanje.
 \begin{figure}[H]
 	\includegraphics[width=1\linewidth,clip=]{assets/jetstream-commits-v3.1.3.png}
 	\centering
